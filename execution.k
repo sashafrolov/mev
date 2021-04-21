@@ -43,14 +43,14 @@ configuration
     rule <k> Address:ETHAddress in Token:ETHAddress gives Amount:Int => Address in Token gets (0 -Int Amount) ... </k>
 
 
-//    rule <k> TX:ETHTransaction => .K ... </k>
-//         <M> ... .Set => SetItem(TX) </M>
+    rule <k> TX:ETHTransaction => .K ... </k>
+         <M> ... .Set => SetItem(TX) </M>
 
     // TX Censoring
     // rule <k> _:ETHTransaction => .K ... </k>
 
-//    rule <k> .K => exec(TX) </k>
-//         <M> ... SetItem(TX:ETHTransaction) => .Set ... </M>
+    rule <k> .K => exec(TX) </k>
+         <M> ... SetItem(TX:ETHTransaction) => .Set ... </M>
 
     rule <k> TX:ETHTransaction => exec(TX) ... </k>
 
