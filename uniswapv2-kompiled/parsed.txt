@@ -1,0 +1,1682 @@
+module ARRAY$SYNTAX [org.kframework.attributes.Location(Location(199,1,203,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports ARRAY-SYMBOLIC$SYNTAX
+  imports ARRAY-KORE$SYNTAX
+endmodule
+
+
+module ARRAY-IN-K$SYNTAX [org.kframework.attributes.Location(Location(132,1,179,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports LIST$SYNTAX
+  imports K-EQUAL$SYNTAX
+  imports INT$SYNTAX
+  imports ARRAY-SYNTAX$SYNTAX
+  syntax List ::= "ensureOffsetList" "(" List "," Int "," KItem ")" [function, klabel(ensureOffsetList)]
+  syntax Array ::= "makeArray" "(" Int "," KItem ")" [function, hook(ARRAY.make), klabel(makeArray)]
+  syntax Array ::= "arr" "(" List "," Int "," KItem ")" [klabel(arr)]
+endmodule
+
+
+module ARRAY-KORE$SYNTAX [kore, org.kframework.attributes.Location(Location(195,1,197,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports ARRAY-IN-K$SYNTAX
+endmodule
+
+
+module ARRAY-SYMBOLIC$SYNTAX [org.kframework.attributes.Location(Location(191,1,193,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports ARRAY-IN-K$SYNTAX
+endmodule
+
+
+module ARRAY-SYNTAX [org.kframework.attributes.Location(Location(67,1,130,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports LIST
+  imports ARRAY-SYNTAX$SYNTAX
+endmodule
+
+
+module ARRAY-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(67,1,130,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports LIST$SYNTAX
+  syntax KItem ::= Array "[" Int "]" [function, hook(ARRAY.lookup)]
+  syntax Bool ::= Int "in_keys" "(" Array ")" [function, functional, hook(ARRAY.in_keys)]
+  syntax Array [element(_[_<-_]), hook(ARRAY.Array), org.kframework.attributes.Location(Location(70,3,70,69)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), unit(arrayCtor)]
+  syntax Array ::= Array "[" Int "<-" KItem "]" [function, hook(ARRAY.update), klabel(_[_<-_]), symbol]
+  syntax Array ::= Array "[" Int "<-" "undef" "]" [function, hook(ARRAY.remove)]
+  syntax Array ::= "updateArray" "(" Array "," Int "," List ")" [function, hook(ARRAY.updateAll), klabel(updateArray)]
+  syntax Array ::= "fillArray" "(" Array "," Int "," Int "," KItem ")" [function, hook(ARRAY.fill), klabel(fillArray)]
+endmodule
+
+
+module AUTO-CASTS [org.kframework.attributes.Location(Location(373,1,381,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports AUTO-CASTS$SYNTAX
+endmodule
+
+
+module AUTO-CASTS$SYNTAX [org.kframework.attributes.Location(Location(373,1,381,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module AUTO-FOLLOW [org.kframework.attributes.Location(Location(383,1,394,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports AUTO-FOLLOW$SYNTAX
+endmodule
+
+
+module AUTO-FOLLOW$SYNTAX [org.kframework.attributes.Location(Location(383,1,394,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module BASIC-K [org.kframework.attributes.Location(Location(35,1,41,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-BOOL
+  imports ML-SYNTAX
+  imports BASIC-K$SYNTAX
+endmodule
+
+
+module BASIC-K$SYNTAX [org.kframework.attributes.Location(Location(35,1,41,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-BOOL$SYNTAX
+  imports ML-SYNTAX$SYNTAX
+  syntax KItem [hook(K.KItem), org.kframework.attributes.Location(Location(38,3,38,30)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax KConfigVar [org.kframework.attributes.Location(Location(40,3,40,27)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md)), token]
+  syntax K ::= KItem
+endmodule
+
+
+module BOOL [not-lr1, org.kframework.attributes.Location(Location(786,1,860,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports BOOL-SYNTAX
+  imports BOOL$SYNTAX
+  imports BASIC-K
+  rule `notBool_`(#token("true","Bool"))=>#token("false","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(827), org.kframework.attributes.Location(Location(827,8,827,29)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `notBool_`(#token("false","Bool"))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(828), org.kframework.attributes.Location(Location(828,8,828,29)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_xorBool_`(#token("false","Bool"),#SemanticCastToBool(B))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(840), org.kframework.attributes.Location(Location(840,8,840,38)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_xorBool_`(#SemanticCastToBool(B),#token("false","Bool"))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(841), org.kframework.attributes.Location(Location(841,8,841,38)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_xorBool_`(#SemanticCastToBool(B),#SemanticCastToBool(B))=>#token("false","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(842), org.kframework.attributes.Location(Location(842,8,842,38)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orElseBool_`(#token("true","Bool"),#SemanticCastToBool(_))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(849), org.kframework.attributes.Location(Location(849,8,849,33)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orElseBool_`(#token("false","Bool"),#SemanticCastToBool(K))=>#SemanticCastToBool(K) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(851), org.kframework.attributes.Location(Location(851,8,851,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orElseBool_`(#SemanticCastToBool(_),#token("true","Bool"))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(850), org.kframework.attributes.Location(Location(850,8,850,33)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orElseBool_`(#SemanticCastToBool(K),#token("false","Bool"))=>#SemanticCastToBool(K) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(852), org.kframework.attributes.Location(Location(852,8,852,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orBool_`(#token("true","Bool"),#SemanticCastToBool(_))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(844), org.kframework.attributes.Location(Location(844,8,844,34)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orBool_`(#token("false","Bool"),#SemanticCastToBool(B))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(846), org.kframework.attributes.Location(Location(846,8,846,32)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orBool_`(#SemanticCastToBool(_),#token("true","Bool"))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(845), org.kframework.attributes.Location(Location(845,8,845,34)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_orBool_`(#SemanticCastToBool(B),#token("false","Bool"))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(847), org.kframework.attributes.Location(Location(847,8,847,32)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_impliesBool_`(#token("true","Bool"),#SemanticCastToBool(B))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(854), org.kframework.attributes.Location(Location(854,8,854,36)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_impliesBool_`(#token("false","Bool"),#SemanticCastToBool(_))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(855), org.kframework.attributes.Location(Location(855,8,855,40)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_impliesBool_`(#SemanticCastToBool(_),#token("true","Bool"))=>#token("true","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(856), org.kframework.attributes.Location(Location(856,8,856,39)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_impliesBool_`(#SemanticCastToBool(B),#token("false","Bool"))=>`notBool_`(#SemanticCastToBool(B)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(857), org.kframework.attributes.Location(Location(857,8,857,45)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andThenBool_`(#token("true","Bool"),#SemanticCastToBool(K))=>#SemanticCastToBool(K) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(835), org.kframework.attributes.Location(Location(835,8,835,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andThenBool_`(#token("false","Bool"),#SemanticCastToBool(_))=>#token("false","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(837), org.kframework.attributes.Location(Location(837,8,837,36)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andThenBool_`(#SemanticCastToBool(_),#token("false","Bool"))=>#token("false","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(838), org.kframework.attributes.Location(Location(838,8,838,36)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andThenBool_`(#SemanticCastToBool(K),#token("true","Bool"))=>#SemanticCastToBool(K) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(836), org.kframework.attributes.Location(Location(836,8,836,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andBool_`(#token("true","Bool"),#SemanticCastToBool(B))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(830), org.kframework.attributes.Location(Location(830,8,830,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andBool_`(#token("false","Bool"),#SemanticCastToBool(_))=>#token("false","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(832), org.kframework.attributes.Location(Location(832,8,832,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andBool_`(#SemanticCastToBool(_),#token("false","Bool"))=>#token("false","Bool") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(833), org.kframework.attributes.Location(Location(833,8,833,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_andBool_`(#SemanticCastToBool(B),#token("true","Bool"))=>#SemanticCastToBool(B) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(831), org.kframework.attributes.Location(Location(831,8,831,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_=/=Bool_`(#SemanticCastToBool(B1),#SemanticCastToBool(B2))=>`notBool_`(`_==Bool_`(#SemanticCastToBool(B1),#SemanticCastToBool(B2))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(859), org.kframework.attributes.Location(Location(859,8,859,57)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module BOOL$SYNTAX [not-lr1, org.kframework.attributes.Location(Location(786,1,860,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports BOOL-SYNTAX$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax priority notBool_ > _orElseBool_ _orBool_ _andThenBool_ _impliesBool_ _andBool_ _xorBool_ > _==Bool_ _=/=Bool_
+  syntax associativity left _xorBool_
+  syntax associativity left _orElseBool_
+  syntax associativity left _orBool_
+  syntax associativity left _impliesBool_
+  syntax associativity left _andThenBool_
+  syntax associativity left _andBool_
+  syntax associativity left _==Bool_ _=/=Bool_
+  syntax associativity left _==Bool_
+  syntax associativity left _=/=Bool_
+  syntax Bool ::= Bool "xorBool" Bool [boolOperation, function, functional, hook(BOOL.xor), klabel(_xorBool_), left, smt-hook(xor), symbol]
+  syntax Bool ::= Bool "orElseBool" Bool [boolOperation, function, functional, hook(BOOL.orElse), klabel(_orElseBool_), left, smt-hook(or), symbol]
+  syntax Bool ::= Bool "orBool" Bool [boolOperation, function, functional, hook(BOOL.or), klabel(_orBool_), latex({#1}\vee_{\scriptstyle\it Bool}{#2}), left, smt-hook(or), symbol]
+  syntax Bool ::= Bool "impliesBool" Bool [boolOperation, function, functional, hook(BOOL.implies), klabel(_impliesBool_), left, smt-hook(=>), symbol]
+  syntax Bool ::= Bool "andThenBool" Bool [boolOperation, function, functional, hook(BOOL.andThen), klabel(_andThenBool_), left, smt-hook(and), symbol]
+  syntax Bool ::= Bool "andBool" Bool [boolOperation, function, functional, hook(BOOL.and), klabel(_andBool_), latex({#1}\wedge_{\scriptstyle\it Bool}{#2}), left, smt-hook(and), symbol]
+  syntax Bool ::= Bool "==Bool" Bool [function, functional, hook(BOOL.eq), klabel(_==Bool_), left, smt-hook(=), symbol]
+  syntax Bool ::= Bool "=/=Bool" Bool [function, functional, hook(BOOL.ne), klabel(_=/=Bool_), left, smt-hook(distinct), symbol]
+  syntax Bool ::= "notBool" Bool [boolOperation, function, functional, hook(BOOL.not), klabel(notBool_), latex(\neg_{\scriptstyle\it Bool}{#1}), smt-hook(not), symbol]
+endmodule
+
+
+module BOOL-SYNTAX [org.kframework.attributes.Location(Location(780,1,784,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SORT-BOOL
+  imports BOOL-SYNTAX$SYNTAX
+endmodule
+
+
+module BOOL-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(780,1,784,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SORT-BOOL$SYNTAX
+  syntax Bool ::= "true" [token]
+  syntax Bool ::= "false" [token]
+endmodule
+
+
+module BUILTIN-ID-TOKENS [org.kframework.attributes.Location(Location(62,1,65,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports BUILTIN-ID-TOKENS$SYNTAX
+endmodule
+
+
+module BUILTIN-ID-TOKENS$SYNTAX [org.kframework.attributes.Location(Location(62,1,65,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax #UpperId ::= r"[A-Z][a-zA-Z0-9]*" [prec(2), token]
+  syntax #LowerId ::= r"[a-z][a-zA-Z0-9]*" [prec(2), token]
+endmodule
+
+
+module BYTES$SYNTAX [org.kframework.attributes.Location(Location(1905,1,1919,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports INT$SYNTAX
+  imports BYTES-KORE$SYNTAX
+endmodule
+
+
+module BYTES-HOOKED$SYNTAX [org.kframework.attributes.Location(Location(1635,1,1805,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-SYNTAX$SYNTAX
+  syntax associativity right _+Bytes__BYTES-HOOKED_Bytes_Bytes_Bytes
+  syntax String ::= "Bytes2String" "(" Bytes ")" [function, functional, hook(BYTES.bytes2string), klabel(Bytes2String)]
+  syntax Signedness ::= "Unsigned" [klabel(unsignedBytes), symbol]
+  syntax Signedness ::= "Signed" [klabel(signedBytes), symbol]
+  syntax Int ::= Bytes "[" Int "]" [function, hook(BYTES.get)]
+  syntax Int ::= "lengthBytes" "(" Bytes ")" [function, functional, hook(BYTES.length), klabel(lengthBytes), smtlib(lengthBytes)]
+  syntax Int ::= "Bytes2Int" "(" Bytes "," Endianness "," Signedness ")" [function, functional, hook(BYTES.bytes2int), klabel(Bytes2Int)]
+  syntax Endianness ::= "LE" [klabel(littleEndianBytes), symbol]
+  syntax Endianness ::= "BE" [klabel(bigEndianBytes), symbol]
+  syntax Bytes [hook(BYTES.Bytes), org.kframework.attributes.Location(Location(1638,3,1638,41)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), token]
+  syntax Bytes ::= Bytes "[" Int "<-" Int "]" [function, hook(BYTES.update)]
+  syntax Bytes ::= Bytes "+Bytes" Bytes [function, functional, hook(BYTES.concat), right]
+  syntax Bytes ::= "substrBytes" "(" Bytes "," Int "," Int ")" [function, hook(BYTES.substr), klabel(substrBytes)]
+  syntax Bytes ::= "reverseBytes" "(" Bytes ")" [function, functional, hook(BYTES.reverse), klabel(reverseBytes)]
+  syntax Bytes ::= "replaceAtBytes" "(" Bytes "," Int "," Bytes ")" [function, hook(BYTES.replaceAt), klabel(replaceAtBytes)]
+  syntax Bytes ::= "padRightBytes" "(" Bytes "," Int "," Int ")" [function, hook(BYTES.padRight), klabel(padRightBytes)]
+  syntax Bytes ::= "padLeftBytes" "(" Bytes "," Int "," Int ")" [function, hook(BYTES.padLeft), klabel(padLeftBytes)]
+  syntax Bytes ::= "String2Bytes" "(" String ")" [function, functional, hook(BYTES.string2bytes), klabel(String2Bytes)]
+  syntax Bytes ::= "Int2Bytes" "(" Int "," Int "," Endianness ")" [function, functional, hook(BYTES.int2bytes), klabel(Int2Bytes)]
+  syntax Bytes ::= "Int2Bytes" "(" Int "," Endianness "," Signedness ")" [function, functional, klabel(Int2BytesNoLen)]
+  syntax Bytes ::= ".Bytes" [function, functional, hook(BYTES.empty)]
+endmodule
+
+
+module BYTES-KORE$SYNTAX [kore, org.kframework.attributes.Location(Location(1892,1,1895,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports BYTES-SYMBOLIC-CEIL$SYNTAX
+  imports BYTES-HOOKED$SYNTAX
+endmodule
+
+
+module BYTES-SYMBOLIC-CEIL$SYNTAX [kore, org.kframework.attributes.Location(Location(1897,1,1903,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports INT$SYNTAX
+  imports BYTES-HOOKED$SYNTAX
+endmodule
+
+
+module COLLECTIONS$SYNTAX [org.kframework.attributes.Location(Location(753,1,761,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SET$SYNTAX
+  imports MAP$SYNTAX
+  imports LIST$SYNTAX
+  syntax Set ::= "List2Set" "(" List ")" [function, functional, hook(SET.list2set), klabel(List2Set)]
+  syntax List ::= "Set2List" "(" Set ")" [function, functional, hook(SET.set2list), klabel(Set2List)]
+endmodule
+
+
+module CONFIG-CELLS [org.kframework.attributes.Location(Location(299,1,312,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports RULE-LISTS
+  imports KCELLS
+  imports CONFIG-CELLS$SYNTAX
+endmodule
+
+
+module CONFIG-CELLS$SYNTAX [org.kframework.attributes.Location(Location(299,1,312,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports RULE-LISTS$SYNTAX
+  imports KCELLS$SYNTAX
+  syntax Cell ::= "<" #CellName #CellProperties ">" K "</" #CellName ">" [klabel(#configCell), symbol]
+  syntax Cell ::= "<" #CellName "/>" [klabel(#externalCell), symbol]
+  syntax #CellProperty ::= #CellName "=" KString [klabel(#cellProperty), symbol]
+  syntax #CellProperties ::= #CellProperty #CellProperties [klabel(#cellPropertyList), symbol]
+  syntax #CellProperties ::= "" [klabel(#cellPropertyListTerminator), symbol]
+  syntax #CellName ::= r"[a-zA-Z][a-zA-Z0-9\\-]*" [prec(1), token]
+  syntax #CellName ::= #UpperId [token]
+  syntax #CellName ::= #LowerId [token]
+endmodule
+
+
+module DEFAULT-LAYOUT [org.kframework.attributes.Location(Location(504,1,508,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports DEFAULT-LAYOUT$SYNTAX
+endmodule
+
+
+module DEFAULT-LAYOUT$SYNTAX [org.kframework.attributes.Location(Location(504,1,508,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax #Layout ::= r"(\\/\\/[^\\n\\r]*)"
+  syntax #Layout ::= r"(\\/\\*([^\\*]|(\\*+([^\\*\\/])))*\\*+\\/)"
+  syntax #Layout ::= r"([\\ \\n\\r\\t])"
+endmodule
+
+
+module DOMAINS [org.kframework.attributes.Location(Location(42,1,53,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING
+  imports SET
+  imports MAP
+  imports LIST
+  imports K-IO
+  imports INT
+  imports ID
+  imports DOMAINS-SYNTAX
+  imports DOMAINS$SYNTAX
+  imports BOOL
+  imports BASIC-K
+endmodule
+
+
+module DOMAINS$SYNTAX [org.kframework.attributes.Location(Location(42,1,53,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING$SYNTAX
+  imports SET$SYNTAX
+  imports MAP$SYNTAX
+  imports LIST$SYNTAX
+  imports K-IO$SYNTAX
+  imports INT$SYNTAX
+  imports ID$SYNTAX
+  imports DOMAINS-SYNTAX$SYNTAX
+  imports BOOL$SYNTAX
+  imports BASIC-K$SYNTAX
+endmodule
+
+
+module DOMAINS-SYNTAX [org.kframework.attributes.Location(Location(34,1,40,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports UNSIGNED-INT-SYNTAX
+  imports STRING-SYNTAX
+  imports SORT-K
+  imports ID-SYNTAX
+  imports DOMAINS-SYNTAX$SYNTAX
+  imports BOOL-SYNTAX
+endmodule
+
+
+module DOMAINS-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(34,1,40,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports UNSIGNED-INT-SYNTAX$SYNTAX
+  imports STRING-SYNTAX$SYNTAX
+  imports SORT-K$SYNTAX
+  imports ID-SYNTAX$SYNTAX
+  imports BOOL-SYNTAX$SYNTAX
+endmodule
+
+
+module EXECUTION [org.kframework.attributes.Location(Location(21,1,65,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k))]
+  imports MAP
+  imports EXECUTION-SYNTAX
+  imports EXECUTION$SYNTAX
+  imports DOMAINS
+  syntax Cell ::= VCell
+  syntax Cell ::= SCell
+  syntax Cell ::= RCell
+  syntax Cell ::= PCell
+  syntax Cell ::= NCell
+  syntax Cell ::= MCell
+  syntax Cell ::= KCell
+  syntax Cell ::= GeneratedTopCell
+  syntax Cell ::= BCell
+  rule initVCell(.KList)=>`<V>`(#noDots(.KList),`.Map`(.KList),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initSCell(.KList)=>`<S>`(#noDots(.KList),`.Map`(.KList),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initRCell(.KList)=>`<R>`(#noDots(.KList),`.Map`(.KList),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initPCell(.KList)=>`<P>`(#noDots(.KList),`.Map`(.KList),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initNCell(.KList)=>`<N>`(#noDots(.KList),#token("1","Int"),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initMCell(.KList)=>`<M>`(#noDots(.KList),`.Set`(.KList),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initKCell(Init)=>`<k>`(#noDots(.KList),#SemanticCastToBlock(`project:Block`(`Map:lookup`(Init,#token("$PGM","KConfigVar")))),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initGeneratedTopCell(Init)=>`<generatedTop>`(#noDots(.KList),#cells(initKCell(Init),initMCell(.KList),initSCell(.KList),initBCell(.KList),initPCell(.KList),initVCell(.KList),initRCell(.KList),initNCell(.KList)),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule initBCell(.KList)=>`<B>`(#noDots(.KList),`.List`(.KList),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule `<k>`(#noDots(.KList),`_in_gives__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token),#SemanticCastToInt(Amount))=>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token),`_-Int_`(#token("0","Int"),#SemanticCastToInt(Amount))),#dots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(43), org.kframework.attributes.Location(Location(43,10,43,119)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `<k>`(#noDots(.KList),`__;_EXECUTION-SYNTAX_Block_Block_Statement`(#SemanticCastToBlock(B),#SemanticCastToStatement(S))=>#SemanticCastToBlock(B)~>#SemanticCastToStatement(S),#dots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(57), org.kframework.attributes.Location(Location(57,10,57,53)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `<k>`(#noDots(.KList),`_;_EXECUTION-SYNTAX_Block_Statement`(#SemanticCastToStatement(S))=>#SemanticCastToStatement(S),#dots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(58), org.kframework.attributes.Location(Location(58,10,58,40)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `<k>`(#noDots(.KList),#SemanticCastToETHTransaction(TX)=>`exec(_)_EXECUTION-SYNTAX_Executable_ETHTransaction`(#SemanticCastToETHTransaction(TX)),#dots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(55), org.kframework.attributes.Location(Location(55,10,55,52)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(`<k>`(#noDots(.KList),`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token),#SemanticCastToInt(_)),#dots(.KList)),`<S>`(#noDots(.KList),#SemanticCastToMap(B)=>`Map:update`(#SemanticCastToMap(B),`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token)),#SemanticCastToInt(#token("0","Int"))),#noDots(.KList))) requires `notBool_`(`Set:in`(`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token)),`keys(_)_MAP_Set_Map`(#SemanticCastToMap(B)))) ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(36), org.kframework.attributes.Location(Location(36,10,37,102)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule #cells(`<k>`(#noDots(.KList),`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token),#SemanticCastToInt(Amount))=>.K,#dots(.KList)),`<S>`(#dots(.KList),`_|->_`(`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(Token)),#SemanticCastToInt(OldBalance)=>`_+Int_`(#SemanticCastToInt(Amount),#SemanticCastToInt(OldBalance))),#dots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(39), org.kframework.attributes.Location(Location(39,10,40,90)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(`<k>`(#noDots(.KList),.K=>`exec(_)_EXECUTION-SYNTAX_Executable_ETHTransaction`(#SemanticCastToETHTransaction(TX)),#noDots(.KList)),`<M>`(#dots(.KList),`SetItem`(#SemanticCastToETHTransaction(TX))=>`.Set`(.KList),#dots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(52), org.kframework.attributes.Location(Location(52,10,53,61)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(`<k>`(#noDots(.KList),.K=>`DONE_EXECUTION-SYNTAX_Statement`(.KList),#noDots(.KList)),`<M>`(#noDots(.KList),`.Set`(.KList),#noDots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(6), contentStartLine(62), org.kframework.attributes.Location(Location(62,6,63,19)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(`<k>`(#noDots(.KList),#SemanticCastToETHTransaction(TX)=>.K,#dots(.KList)),`<M>`(#dots(.KList),`.Set`(.KList)=>`SetItem`(#SemanticCastToETHTransaction(TX)),#noDots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(46), org.kframework.attributes.Location(Location(46,10,47,42)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module EXECUTION$SYNTAX [org.kframework.attributes.Location(Location(21,1,65,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k))]
+  imports MAP$SYNTAX
+  imports EXECUTION-SYNTAX$SYNTAX
+  imports DOMAINS$SYNTAX
+  syntax VCellOpt ::= VCell
+  syntax VCellOpt ::= "noVCell" [cellOptAbsent(VCell)]
+  syntax VCell ::= "initVCell" [function, initializer, noThread]
+  syntax VCell ::= "<V>" Map "</V>" [cell, cellName(V), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax SCellOpt ::= SCell
+  syntax SCellOpt ::= "noSCell" [cellOptAbsent(SCell)]
+  syntax SCell ::= "initSCell" [function, initializer, noThread]
+  syntax SCell ::= "<S>" Map "</S>" [cell, cellName(S), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax RCellOpt ::= RCell
+  syntax RCellOpt ::= "noRCell" [cellOptAbsent(RCell)]
+  syntax RCell ::= "initRCell" [function, initializer, noThread]
+  syntax RCell ::= "<R>" Map "</R>" [cell, cellName(R), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax PCellOpt ::= PCell
+  syntax PCellOpt ::= "noPCell" [cellOptAbsent(PCell)]
+  syntax PCell ::= "initPCell" [function, initializer, noThread]
+  syntax PCell ::= "<P>" Map "</P>" [cell, cellName(P), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax NCellOpt ::= NCell
+  syntax NCellOpt ::= "noNCell" [cellOptAbsent(NCell)]
+  syntax NCell ::= "initNCell" [function, initializer, noThread]
+  syntax NCell ::= "<N>" Int "</N>" [cell, cellName(N), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax MCellOpt ::= MCell
+  syntax MCellOpt ::= "noMCell" [cellOptAbsent(MCell)]
+  syntax MCell ::= "initMCell" [function, initializer, noThread]
+  syntax MCell ::= "<M>" Set "</M>" [cell, cellName(M), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax KCellOpt ::= KCell
+  syntax KCellOpt ::= "noKCell" [cellOptAbsent(KCell)]
+  syntax KCell ::= "initKCell" "(" Map ")" [function, initializer, noThread]
+  syntax KCell ::= "<k>" K "</k>" [cell, cellName(k), color(green), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), maincell, org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  syntax GeneratedTopCellFragment ::= "<generatedTop>-fragment" KCellOpt MCellOpt SCellOpt BCellOpt PCellOpt VCellOpt RCellOpt NCellOpt "</generatedTop>-fragment" [cellFragment(GeneratedTopCell)]
+  syntax GeneratedTopCell ::= "initGeneratedTopCell" "(" Map ")" [function, initializer, noThread]
+  syntax GeneratedTopCell ::= "<generatedTop>" KCell MCell SCell BCell PCell VCell RCell NCell "</generatedTop>" [cell, cellName(generatedTop), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%n%3%n%4%n%5%n%6%n%7%n%8%n%9%d%n%10), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), topcell]
+  syntax BCellOpt ::= BCell
+  syntax BCellOpt ::= "noBCell" [cellOptAbsent(BCell)]
+  syntax BCell ::= "initBCell" [function, initializer, noThread]
+  syntax BCell ::= "<B>" List "</B>" [cell, cellName(B), contentStartColumn(5), contentStartLine(26), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  Bubble(config,<k color="green"> $PGM:Block </k>       // Instructions left to execute
+    <M> .Set </M>     // Available transactions for reordering
+    <S> .Map </S>             // System state; mapping of all (Address in Token) to Balance (all type Integer)
+    <B> .List </B>
+    <P> .Map </P>
+    <V> .Map </V> // Mapping of Maker Vault to Owner
+    <R> .Map </R> // Stability fees for Maker
+    <N> 1 </N>,[contentStartColumn(5), contentStartLine(26), org.kframework.attributes.Location(Location(25,1,33,14)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k))])
+endmodule
+
+
+module EXECUTION-SYNTAX [org.kframework.attributes.Location(Location(1,1,19,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k))]
+  imports EXECUTION-SYNTAX$SYNTAX
+  imports DOMAINS-SYNTAX
+endmodule
+
+
+module EXECUTION-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(1,1,19,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/execution.k))]
+  imports DOMAINS-SYNTAX$SYNTAX
+  syntax Statement ::= Executable
+  syntax Statement ::= ETHTransaction
+  syntax Statement ::= ETHAddress "in" ETHAddress "gives" Int
+  syntax Statement ::= ETHAddress "in" ETHAddress "gets" Int
+  syntax Statement ::= "FAIL"
+  syntax Statement ::= "DONE"
+  syntax Executable ::= "exec(" ETHTransaction ")"
+  syntax ETHTransaction ::= ETHTransaction "fee" Int
+  syntax ETHTransaction ::= ETHTransaction "block" Int
+  syntax ETHAddress ::= Int
+  syntax ETHAddress ::= "ETH"
+  syntax Block ::= Statement ";"
+  syntax Block ::= Block Statement ";"
+  syntax BalanceEntry ::= ETHAddress "in" ETHAddress
+endmodule
+
+
+module FLOAT$SYNTAX [org.kframework.attributes.Location(Location(1157,1,1329,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports INT-SYNTAX$SYNTAX
+  imports FLOAT-SYNTAX$SYNTAX
+  imports BOOL$SYNTAX
+  syntax priority --Float__FLOAT_Float_Float > _^Float__FLOAT_Float_Float_Float > _/Float__FLOAT_Float_Float_Float _%Float__FLOAT_Float_Float_Float _*Float__FLOAT_Float_Float_Float > _-Float__FLOAT_Float_Float_Float _+Float__FLOAT_Float_Float_Float
+  syntax associativity left _^Float__FLOAT_Float_Float_Float
+  syntax associativity left _>Float__FLOAT_Bool_Float_Float
+  syntax associativity left _>=Float__FLOAT_Bool_Float_Float
+  syntax associativity left _==Float__FLOAT_Bool_Float_Float
+  syntax associativity left _=/=Float__FLOAT_Bool_Float_Float
+  syntax associativity left _<Float__FLOAT_Bool_Float_Float
+  syntax associativity left _<=Float__FLOAT_Bool_Float_Float
+  syntax associativity left _/Float__FLOAT_Float_Float_Float _%Float__FLOAT_Float_Float_Float _*Float__FLOAT_Float_Float_Float
+  syntax associativity left _/Float__FLOAT_Float_Float_Float
+  syntax associativity left _-Float__FLOAT_Float_Float_Float _+Float__FLOAT_Float_Float_Float
+  syntax associativity left _-Float__FLOAT_Float_Float_Float
+  syntax associativity left _+Float__FLOAT_Float_Float_Float
+  syntax associativity left _*Float__FLOAT_Float_Float_Float
+  syntax associativity left _%Float__FLOAT_Float_Float_Float
+  syntax Int ::= "precisionFloat" "(" Float ")" [function, functional, hook(FLOAT.precision), klabel(precisionFloat)]
+  syntax Int ::= "exponentFloat" "(" Float ")" [function, functional, hook(FLOAT.exponent), klabel(exponentFloat)]
+  syntax Int ::= "exponentBitsFloat" "(" Float ")" [function, functional, hook(FLOAT.exponentBits), klabel(exponentBitsFloat)]
+  syntax Int ::= "Float2Int" "(" Float ")" [function, functional, hook(FLOAT.float2int), klabel(Float2Int), latex({\\it{}Float2Int})]
+  syntax Float ::= Float "^Float" Float [function, hook(FLOAT.pow), latex({#1}^{#2}), left]
+  syntax Float ::= Float "/Float" Float [function, hook(FLOAT.div), latex({#1}\mathrel{\div_{\scriptstyle\it Float}}{#2}), left, smt-hook((fp.div roundNearestTiesToEven #1 #2))]
+  syntax Float ::= Float "-Float" Float [function, hook(FLOAT.sub), latex({#1}\mathrel{-_{\scriptstyle\it Float}}{#2}), left, smt-hook((fp.sub roundNearestTiesToEven #1 #2))]
+  syntax Float ::= Float "+Float" Float [function, hook(FLOAT.add), latex({#1}\mathrel{+_{\scriptstyle\it Float}}{#2}), left, smt-hook((fp.add roundNearestTiesToEven #1 #2))]
+  syntax Float ::= Float "*Float" Float [function, hook(FLOAT.mul), latex({#1}\mathrel{\ast_{\scriptstyle\it Float}}{#2}), left, smt-hook((fp.mul roundNearestTiesToEven #1 #2))]
+  syntax Float ::= Float "%Float" Float [function, hook(FLOAT.rem), latex({#1}\mathrel{\%_{\scriptstyle\it Float}}{#2}), left, smt-hook((fp.rem roundNearestTiesToEven #1 #2))]
+  syntax Float ::= "tanFloat" "(" Float ")" [function, hook(FLOAT.tan), klabel(tanFloat)]
+  syntax Float ::= "sqrtFloat" "(" Float ")" [function, klabel(sqrtFloat)]
+  syntax Float ::= "sinFloat" "(" Float ")" [function, functional, hook(FLOAT.sin), klabel(sinFloat)]
+  syntax Float ::= "roundFloat" "(" Float "," Int "," Int ")" [function, hook(FLOAT.round), klabel(roundFloat)]
+  syntax Float ::= "rootFloat" "(" Float "," Int ")" [function, hook(FLOAT.root), klabel(rootFloat)]
+  syntax Float ::= "minValueFloat" "(" Int "," Int ")" [function, hook(FLOAT.minValue), klabel(minValueFloat)]
+  syntax Float ::= "minFloat" "(" Float "," Float ")" [function, hook(FLOAT.min), klabel(minFloat), smt-hook(fp.min)]
+  syntax Float ::= "maxValueFloat" "(" Int "," Int ")" [function, hook(FLOAT.maxValue), klabel(maxValueFloat)]
+  syntax Float ::= "maxFloat" "(" Float "," Float ")" [function, hook(FLOAT.max), klabel(maxFloat), smt-hook(fp.max)]
+  syntax Float ::= "logFloat" "(" Float ")" [function, hook(FLOAT.log), klabel(logFloat)]
+  syntax Float ::= "floorFloat" "(" Float ")" [function, functional, hook(FLOAT.floor), klabel(floorFloat)]
+  syntax Float ::= "expFloat" "(" Float ")" [function, functional, hook(FLOAT.exp), klabel(expFloat)]
+  syntax Float ::= "cosFloat" "(" Float ")" [function, functional, hook(FLOAT.cos), klabel(cosFloat)]
+  syntax Float ::= "ceilFloat" "(" Float ")" [function, functional, hook(FLOAT.ceil), klabel(ceilFloat)]
+  syntax Float ::= "atanFloat" "(" Float ")" [function, functional, hook(FLOAT.atan), klabel(atanFloat)]
+  syntax Float ::= "atan2Float" "(" Float "," Float ")" [function, hook(FLOAT.atan2), klabel(atan2Float)]
+  syntax Float ::= "asinFloat" "(" Float ")" [function, hook(FLOAT.asin), klabel(asinFloat)]
+  syntax Float ::= "acosFloat" "(" Float ")" [function, hook(FLOAT.acos), klabel(acosFloat)]
+  syntax Float ::= "absFloat" "(" Float ")" [function, functional, hook(FLOAT.abs), klabel(absFloat), smt-hook(fp.abs)]
+  syntax Float ::= "Int2Float" "(" Int "," Int "," Int ")" [function, hook(FLOAT.int2float), klabel(Int2Float), latex({\\it{}Int2Float})]
+  syntax Float ::= "--Float" Float [function, functional, hook(FLOAT.neg), smt-hook(fp.neg)]
+  syntax Bool ::= Float ">Float" Float [function, hook(FLOAT.gt), latex({#1}\mathrel{>_{\scriptstyle\it Float}}{#2}), left, smt-hook(fg.gt)]
+  syntax Bool ::= Float ">=Float" Float [function, hook(FLOAT.ge), latex({#1}\mathrel{\geq_{\scriptstyle\it Float}}{#2}), left, smt-hook(fp.geq)]
+  syntax Bool ::= Float "==Float" Float [function, hook(FLOAT.eq), klabel(_==Float_), latex({#1}\mathrel{==_{\scriptstyle\it Float}}{#2}), left, smt-hook(fp.eq)]
+  syntax Bool ::= Float "=/=Float" Float [function, latex({#1}\mathrel{\neq_{\scriptstyle\it Float}}{#2}), left, smt-hook((not (fp.eq #1 #2)))]
+  syntax Bool ::= Float "<Float" Float [function, hook(FLOAT.lt), latex({#1}\mathrel{<_{\scriptstyle\it Float}}{#2}), left, smt-hook(fp.lt)]
+  syntax Bool ::= Float "<=Float" Float [function, hook(FLOAT.le), latex({#1}\mathrel{\leq_{\scriptstyle\it Float}}{#2}), left, smt-hook(fp.leq)]
+  syntax Bool ::= "signFloat" "(" Float ")" [function, functional, hook(FLOAT.sign), klabel(signFloat)]
+  syntax Bool ::= "isNaN" "(" Float ")" [function, functional, hook(FLOAT.isNaN), klabel(isNaN), smt-hook(fp.isNaN)]
+  syntax Bool ::= "isInfinite" "(" Float ")" [function, functional, klabel(isInfinite)]
+endmodule
+
+
+module FLOAT-SYNTAX [org.kframework.attributes.Location(Location(1150,1,1155,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports FLOAT-SYNTAX$SYNTAX
+endmodule
+
+
+module FLOAT-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(1150,1,1155,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Float [hook(FLOAT.Float), org.kframework.attributes.Location(Location(1151,3,1151,34)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Float ::= r"[\\+-]?Infinity([fFdD]|([pP][0-9]+[xX][0-9]+))?" [prec(3), token]
+  syntax Float ::= r"NaN([fFdD]|([pP][0-9]+[xX][0-9]+))?" [prec(3), token]
+  syntax Float ::= r"([\\+-]?[0-9]+(\\.[0-9]*)?|\\.[0-9]+)([eE][\\+-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))?" [prec(1), token]
+endmodule
+
+
+module ID [org.kframework.attributes.Location(Location(1959,1,1964,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports ID-COMMON
+  imports ID$SYNTAX
+  rule `freshId(_)_ID-COMMON_Id_Int`(#SemanticCastToInt(I))=>`String2Id(_)_ID-COMMON_Id_String`(`_+String__STRING-COMMON_String_String_String`(#token("\"_\"","String"),`Int2String(_)_STRING-COMMON_String_Int`(#SemanticCastToInt(I)))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1963), org.kframework.attributes.Location(Location(1963,8,1963,62)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module ID$SYNTAX [org.kframework.attributes.Location(Location(1959,1,1964,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports ID-COMMON$SYNTAX
+endmodule
+
+
+module ID-COMMON [org.kframework.attributes.Location(Location(1950,1,1957,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING
+  imports ID-SYNTAX
+  imports ID-COMMON$SYNTAX
+endmodule
+
+
+module ID-COMMON$SYNTAX [org.kframework.attributes.Location(Location(1950,1,1957,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING$SYNTAX
+  imports ID-SYNTAX$SYNTAX
+  syntax String ::= "Id2String" "(" Id ")" [function, functional, hook(STRING.token2string), klabel(Id2String)]
+  syntax Id ::= "freshId" "(" Int ")" [freshGenerator, function, functional, klabel(freshId)]
+  syntax Id ::= "String2Id" "(" String ")" [function, functional, hook(STRING.string2token), klabel(String2Id)]
+endmodule
+
+
+module ID-SYNTAX [org.kframework.attributes.Location(Location(1946,1,1948,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports ID-SYNTAX$SYNTAX
+endmodule
+
+
+module ID-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(1946,1,1948,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Id [org.kframework.attributes.Location(Location(1947,3,1947,19)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), token]
+endmodule
+
+
+module ID-SYNTAX-PROGRAM-PARSING [org.kframework.attributes.Location(Location(1939,1,1944,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports ID-SYNTAX-PROGRAM-PARSING$SYNTAX
+  imports BUILTIN-ID-TOKENS
+endmodule
+
+
+module ID-SYNTAX-PROGRAM-PARSING$SYNTAX [org.kframework.attributes.Location(Location(1939,1,1944,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports BUILTIN-ID-TOKENS$SYNTAX
+  syntax Id ::= r"(?<![A-Za-z0-9\\_])[A-Za-z\\_][A-Za-z0-9\\_]*" [prec(1), token]
+  syntax Id ::= #UpperId [token]
+  syntax Id ::= #LowerId [token]
+endmodule
+
+
+module INT [org.kframework.attributes.Location(Location(1085,1,1115,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL
+  imports INT-SYMBOLIC
+  imports INT-KORE
+  imports INT-COMMON
+  imports INT$SYNTAX
+  rule `signExtendBitRangeInt(_,_,_)_INT-COMMON_Int_Int_Int_Int`(#SemanticCastToInt(I),#SemanticCastToInt(IDX),#SemanticCastToInt(LEN))=>`_-Int_`(`_modInt_`(`_+Int_`(`bitRangeInt(_,_,_)_INT-COMMON_Int_Int_Int_Int`(#SemanticCastToInt(I),#SemanticCastToInt(IDX),#SemanticCastToInt(LEN)),`_<<Int_`(#token("1","Int"),`_-Int_`(#SemanticCastToInt(LEN),#token("1","Int")))),`_<<Int_`(#token("1","Int"),#SemanticCastToInt(LEN))),`_<<Int_`(#token("1","Int"),`_-Int_`(#SemanticCastToInt(LEN),#token("1","Int")))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1094), org.kframework.attributes.Location(Location(1094,8,1094,164)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `minInt(_,_)_INT-COMMON_Int_Int_Int`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>#SemanticCastToInt(I2) requires `_>=Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1105), org.kframework.attributes.Location(Location(1105,8,1105,57)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `minInt(_,_)_INT-COMMON_Int_Int_Int`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>#SemanticCastToInt(I1) requires `_<=Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1104), org.kframework.attributes.Location(Location(1104,8,1104,57)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `freshInt(_)_INT_Int_Int`(#SemanticCastToInt(I))=>#SemanticCastToInt(I) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1111), org.kframework.attributes.Location(Location(1111,8,1111,28)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `bitRangeInt(_,_,_)_INT-COMMON_Int_Int_Int_Int`(#SemanticCastToInt(I),#SemanticCastToInt(IDX),#SemanticCastToInt(LEN))=>`_modInt_`(`_>>Int_`(#SemanticCastToInt(I),#SemanticCastToInt(IDX)),`_<<Int_`(#token("1","Int"),#SemanticCastToInt(LEN))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1092), org.kframework.attributes.Location(Location(1092,8,1092,85)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_modInt_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>`_%Int_`(`_+Int_`(`_%Int_`(#SemanticCastToInt(I1),`absInt(_)_INT-COMMON_Int_Int`(#SemanticCastToInt(I2))),`absInt(_)_INT-COMMON_Int_Int`(#SemanticCastToInt(I2))),`absInt(_)_INT-COMMON_Int_Int`(#SemanticCastToInt(I2))) requires `_=/=Int_`(#SemanticCastToInt(I2),#token("0","Int")) ensures #token("true","Bool") [concrete, contentStartColumn(5), contentStartLine(1099), org.kframework.attributes.Location(Location(1099,5,1102,23)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), simplification]
+  rule `_dividesInt__INT-COMMON_Bool_Int_Int`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>`_==Int_`(`_%Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(I1)),#token("0","Int")) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1108), org.kframework.attributes.Location(Location(1108,8,1108,58)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_divInt_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>`_/Int_`(`_-Int_`(#SemanticCastToInt(I1),`_modInt_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))),#SemanticCastToInt(I2)) requires `_=/=Int_`(#SemanticCastToInt(I2),#token("0","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1096), org.kframework.attributes.Location(Location(1096,8,1097,23)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `_=/=Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>`notBool_`(`_==Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1107), org.kframework.attributes.Location(Location(1107,8,1107,53)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module INT$SYNTAX [org.kframework.attributes.Location(Location(1085,1,1115,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL$SYNTAX
+  imports INT-SYMBOLIC$SYNTAX
+  imports INT-KORE$SYNTAX
+  imports INT-KAST$SYNTAX
+  imports INT-COMMON$SYNTAX
+  syntax K ::= "srandInt" "(" Int ")" [function, hook(INT.srand), klabel(srandInt)]
+  syntax Int ::= "randInt" "(" Int ")" [function, hook(INT.rand), klabel(randInt)]
+  syntax Int ::= "freshInt" "(" Int ")" [freshGenerator, function, functional, klabel(freshInt)]
+endmodule
+
+
+module INT-COMMON [org.kframework.attributes.Location(Location(888,1,1020,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports INT-SYNTAX
+  imports INT-COMMON$SYNTAX
+  imports BOOL
+endmodule
+
+
+module INT-COMMON$SYNTAX [org.kframework.attributes.Location(Location(888,1,1020,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports INT-SYNTAX$SYNTAX
+  imports BOOL$SYNTAX
+  syntax priority ~Int_ > _^Int_ _^%Int__ > _divInt_ _%Int_ _/Int_ _*Int_ _modInt_ > _+Int_ _-Int_ > _>>Int_ _<<Int_ > _&Int_ > _xorInt_ > _|Int_
+  syntax associativity left _|Int_
+  syntax associativity left _xorInt_
+  syntax associativity left _modInt_
+  syntax associativity left _divInt_ _%Int_ _/Int_ _*Int_ _modInt_
+  syntax associativity left _divInt_
+  syntax associativity left _^Int_ _^%Int__
+  syntax associativity left _^Int_
+  syntax associativity left _^%Int__
+  syntax associativity left _>Int_
+  syntax associativity left _>>Int_ _<<Int_
+  syntax associativity left _>>Int_
+  syntax associativity left _>=Int_
+  syntax associativity left _==Int_
+  syntax associativity left _=/=Int_
+  syntax associativity left _<Int_
+  syntax associativity left _<=Int_
+  syntax associativity left _<<Int_
+  syntax associativity left _/Int_
+  syntax associativity left _-Int_
+  syntax associativity left _+Int_ _-Int_
+  syntax associativity left _+Int_
+  syntax associativity left _*Int_
+  syntax associativity left _&Int_
+  syntax associativity left _%Int_
+  syntax Int ::= Int "|Int" Int [function, functional, hook(INT.or), klabel(_|Int_), latex({#1}\mathrel{|_{\scriptstyle\it Int}}{#2}), left, smtlib(orInt), symbol]
+  syntax Int ::= Int "xorInt" Int [function, functional, hook(INT.xor), klabel(_xorInt_), latex({#1}\mathrel{\oplus_{\scriptstyle\it Int}}{#2}), left, smtlib(xorInt), symbol]
+  syntax Int ::= Int "modInt" Int [function, hook(INT.emod), klabel(_modInt_), left, smt-hook(mod), symbol]
+  syntax Int ::= Int "divInt" Int [function, hook(INT.ediv), klabel(_divInt_), left, smt-hook(div), symbol]
+  syntax Int ::= Int "^Int" Int [function, hook(INT.pow), klabel(_^Int_), latex({#1}\mathrel{{\char`\^}_{\!\scriptstyle\it Int}}{#2}), left, smt-hook(^), symbol]
+  syntax Int ::= Int "^%Int" Int Int [function, hook(INT.powmod), klabel(_^%Int__), left, smt-hook((mod (^ #1 #2) #3)), symbol]
+  syntax Int ::= Int ">>Int" Int [function, hook(INT.shr), klabel(_>>Int_), latex({#1}\mathrel{\gg_{\scriptstyle\it Int}}{#2}), left, smtlib(shrInt), symbol]
+  syntax Int ::= Int "<<Int" Int [function, hook(INT.shl), klabel(_<<Int_), latex({#1}\mathrel{\ll_{\scriptstyle\it Int}}{#2}), left, smtlib(shlInt), symbol]
+  syntax Int ::= Int "/Int" Int [function, hook(INT.tdiv), klabel(_/Int_), latex({#1}\mathrel{\div_{\scriptstyle\it Int}}{#2}), left, smt-hook(div), symbol]
+  syntax Int ::= Int "-Int" Int [function, functional, hook(INT.sub), klabel(_-Int_), latex({#1}\mathrel{-_{\scriptstyle\it Int}}{#2}), left, smt-hook(-), symbol]
+  syntax Int ::= Int "+Int" Int [function, functional, hook(INT.add), klabel(_+Int_), latex({#1}\mathrel{+_{\scriptstyle\it Int}}{#2}), left, smt-hook(+), symbol]
+  syntax Int ::= Int "*Int" Int [function, functional, hook(INT.mul), klabel(_*Int_), latex({#1}\mathrel{\ast_{\scriptstyle\it Int}}{#2}), left, smt-hook(*), symbol]
+  syntax Int ::= Int "&Int" Int [function, functional, hook(INT.and), klabel(_&Int_), latex({#1}\mathrel{\&_{\scriptstyle\it Int}}{#2}), left, smtlib(andInt), symbol]
+  syntax Int ::= Int "%Int" Int [function, hook(INT.tmod), klabel(_%Int_), latex({#1}\mathrel{\%_{\scriptstyle\it Int}}{#2}), left, smt-hook(mod), symbol]
+  syntax Int ::= "~Int" Int [function, functional, hook(INT.not), klabel(~Int_), latex(\mathop{\sim_{\scriptstyle\it Int}}{#1}), smtlib(notInt), symbol]
+  syntax Int ::= "signExtendBitRangeInt" "(" Int "," Int "," Int ")" [function, hook(INT.signExtendBitRange), klabel(signExtendBitRangeInt)]
+  syntax Int ::= "minInt" "(" Int "," Int ")" [function, functional, hook(INT.min), smt-hook((ite (< #1 #2) #1 #2))]
+  syntax Int ::= "maxInt" "(" Int "," Int ")" [function, functional, hook(INT.max), smt-hook((ite (< #1 #2) #2 #1))]
+  syntax Int ::= "log2Int" "(" Int ")" [function, hook(INT.log2), klabel(log2Int)]
+  syntax Int ::= "bitRangeInt" "(" Int "," Int "," Int ")" [function, hook(INT.bitRange), klabel(bitRangeInt)]
+  syntax Int ::= "absInt" "(" Int ")" [function, functional, hook(INT.abs), klabel(absInt), smt-hook((ite (< #1 0) (- 0 #1) #1))]
+  syntax Bool ::= Int "dividesInt" Int [function]
+  syntax Bool ::= Int ">Int" Int [function, functional, hook(INT.gt), klabel(_>Int_), latex({#1}\mathrel{>_{\scriptstyle\it Int}}{#2}), left, smt-hook(>), symbol]
+  syntax Bool ::= Int ">=Int" Int [function, functional, hook(INT.ge), klabel(_>=Int_), latex({#1}\mathrel{\geq_{\scriptstyle\it Int}}{#2}), left, smt-hook(>=), symbol]
+  syntax Bool ::= Int "==Int" Int [function, functional, hook(INT.eq), klabel(_==Int_), latex({#1}\mathrel{{=}{=}_{\scriptstyle\it Int}}{#2}), left, smt-hook(=), symbol]
+  syntax Bool ::= Int "=/=Int" Int [function, functional, hook(INT.ne), klabel(_=/=Int_), latex({#1}\mathrel{{=}{/}{=}_{\scriptstyle\it Int}}{#2}), left, smt-hook(distinct), symbol]
+  syntax Bool ::= Int "<Int" Int [function, functional, hook(INT.lt), klabel(_<Int_), latex({#1}\mathrel{<_{\scriptstyle\it Int}}{#2}), left, smt-hook(<), symbol]
+  syntax Bool ::= Int "<=Int" Int [function, functional, hook(INT.le), klabel(_<=Int_), latex({#1}\mathrel{\leq_{\scriptstyle\it Int}}{#2}), left, smt-hook(<=), symbol]
+endmodule
+
+
+module INT-KAST$SYNTAX [kast, org.kframework.attributes.Location(Location(1069,1,1075,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL$SYNTAX
+  imports INT-COMMON$SYNTAX
+endmodule
+
+
+module INT-KORE [kore, org.kframework.attributes.Location(Location(1077,1,1083,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL
+  imports INT-KORE$SYNTAX
+  imports INT-COMMON
+  rule `_==K_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2))=>`_==Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1081), org.kframework.attributes.Location(Location(1081,8,1081,40)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module INT-KORE$SYNTAX [kore, org.kframework.attributes.Location(Location(1077,1,1083,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL$SYNTAX
+  imports INT-COMMON$SYNTAX
+endmodule
+
+
+module INT-SYMBOLIC [org.kframework.attributes.Location(Location(1022,1,1038,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports INT-SYMBOLIC-KORE
+  imports INT-SYMBOLIC$SYNTAX
+  imports INT-COMMON
+  rule `_modInt_`(#SemanticCastToInt(X),#SemanticCastToInt(N))=>#SemanticCastToInt(X) requires `_andBool_`(`_<=Int_`(#token("0","Int"),#SemanticCastToInt(X)),`_<Int_`(#SemanticCastToInt(X),#SemanticCastToInt(N))) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1030), org.kframework.attributes.Location(Location(1030,8,1030,59)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), simplification]
+  rule `_>>Int_`(#token("0","Int"),#SemanticCastToInt(_))=>#token("0","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1037), org.kframework.attributes.Location(Location(1037,8,1037,22)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule `_>>Int_`(#SemanticCastToInt(X),#token("0","Int"))=>#SemanticCastToInt(X) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1036), org.kframework.attributes.Location(Location(1036,8,1036,22)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule `_<<Int_`(#token("0","Int"),#SemanticCastToInt(_))=>#token("0","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1035), org.kframework.attributes.Location(Location(1035,8,1035,22)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule `_<<Int_`(#SemanticCastToInt(X),#token("0","Int"))=>#SemanticCastToInt(X) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1034), org.kframework.attributes.Location(Location(1034,8,1034,22)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule `_-Int_`(#SemanticCastToInt(I),#token("0","Int"))=>#SemanticCastToInt(I) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1028), org.kframework.attributes.Location(Location(1028,8,1028,21)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule `_+Int_`(#SemanticCastToInt(I),#token("0","Int"))=>#SemanticCastToInt(I) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1027), org.kframework.attributes.Location(Location(1027,8,1027,21)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule `_%Int_`(#SemanticCastToInt(X),#SemanticCastToInt(N))=>#SemanticCastToInt(X) requires `_andBool_`(`_<=Int_`(#token("0","Int"),#SemanticCastToInt(X)),`_<Int_`(#SemanticCastToInt(X),#SemanticCastToInt(N))) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1031), org.kframework.attributes.Location(Location(1031,8,1031,59)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), simplification]
+endmodule
+
+
+module INT-SYMBOLIC$SYNTAX [org.kframework.attributes.Location(Location(1022,1,1038,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports INT-SYMBOLIC-KORE$SYNTAX
+  imports INT-COMMON$SYNTAX
+endmodule
+
+
+module INT-SYMBOLIC-KORE [kore, org.kframework.attributes.Location(Location(1040,1,1067,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports ML-SYNTAX
+  imports INT-SYMBOLIC-KORE$SYNTAX
+  imports INT-COMMON
+  rule `_-Int_`(`_-Int_`(#SemanticCastToInt(C),#SemanticCastToInt(I2)),#SemanticCastToInt(I3))=>`_-Int_`(#SemanticCastToInt(C),`_+Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(I3))) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I2, I3), contentStartColumn(8), contentStartLine(1063), org.kframework.attributes.Location(Location(1063,8,1063,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(C)]
+  rule `_-Int_`(#SemanticCastToInt(I1),`_-Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(C)))=>`_+Int_`(`_-Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)),#SemanticCastToInt(C)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I2), contentStartColumn(8), contentStartLine(1062), org.kframework.attributes.Location(Location(1062,8,1062,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(C)]
+  rule `_-Int_`(#SemanticCastToInt(I1),`_+Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(C)))=>`_-Int_`(`_-Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)),#SemanticCastToInt(C)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I2), contentStartColumn(8), contentStartLine(1061), org.kframework.attributes.Location(Location(1061,8,1061,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(C)]
+  rule `_-Int_`(#SemanticCastToInt(I1),`_+Int_`(#SemanticCastToInt(B),#SemanticCastToInt(I3)))=>`_-Int_`(`_-Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I3)),#SemanticCastToInt(B)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I3), contentStartColumn(8), contentStartLine(1057), org.kframework.attributes.Location(Location(1057,8,1057,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(B)]
+  rule `_-Int_`(#SemanticCastToInt(A),#SemanticCastToInt(I))=>`_+Int_`(#SemanticCastToInt(A),`_-Int_`(#token("0","Int"),#SemanticCastToInt(I))) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I), contentStartColumn(8), contentStartLine(1053), org.kframework.attributes.Location(Location(1053,8,1053,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification(51), symbolic(A)]
+  rule `_+Int_`(`_-Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(B)),#SemanticCastToInt(I3))=>`_-Int_`(`_+Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I3)),#SemanticCastToInt(B)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I3), contentStartColumn(8), contentStartLine(1060), org.kframework.attributes.Location(Location(1060,8,1060,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(B)]
+  rule `_+Int_`(`_+Int_`(#SemanticCastToInt(A),#SemanticCastToInt(I2)),#SemanticCastToInt(I3))=>`_+Int_`(#SemanticCastToInt(A),`_+Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(I3))) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I2, I3), contentStartColumn(8), contentStartLine(1055), org.kframework.attributes.Location(Location(1055,8,1055,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(A)]
+  rule `_+Int_`(#SemanticCastToInt(I1),`_-Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(C)))=>`_-Int_`(`_+Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)),#SemanticCastToInt(C)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I2), contentStartColumn(8), contentStartLine(1059), org.kframework.attributes.Location(Location(1059,8,1059,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(C)]
+  rule `_+Int_`(#SemanticCastToInt(I1),`_+Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(C)))=>`_+Int_`(`_+Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)),#SemanticCastToInt(C)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I2), contentStartColumn(8), contentStartLine(1058), org.kframework.attributes.Location(Location(1058,8,1058,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(C)]
+  rule `_+Int_`(#SemanticCastToInt(I1),`_+Int_`(#SemanticCastToInt(B),#SemanticCastToInt(I3)))=>`_+Int_`(#SemanticCastToInt(B),`_+Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I3))) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I3), contentStartColumn(8), contentStartLine(1056), org.kframework.attributes.Location(Location(1056,8,1056,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(B)]
+  rule `_+Int_`(#SemanticCastToInt(I),#SemanticCastToInt(B))=>`_+Int_`(#SemanticCastToInt(B),#SemanticCastToInt(I)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I), contentStartColumn(8), contentStartLine(1052), org.kframework.attributes.Location(Location(1052,8,1052,28)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification(51), symbolic(B)]
+  rule `_&Int_`(#SemanticCastToInt(I1),`_&Int_`(#SemanticCastToInt(I2),#SemanticCastToInt(C)))=>`_&Int_`(`_&Int_`(#SemanticCastToInt(I1),#SemanticCastToInt(I2)),#SemanticCastToInt(C)) requires #token("true","Bool") ensures #token("true","Bool") [concrete(I1, I2), contentStartColumn(8), contentStartLine(1065), org.kframework.attributes.Location(Location(1065,8,1065,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification, symbolic(C)]
+  rule #Ceil(`_modInt_`(#SemanticCastToInt(@I1),#SemanticCastToInt(@I2)))=>#And(#And(#Equals(`_=/=Int_`(#SemanticCastToInt(@I2),#token("0","Int")),#token("true","Bool")),#Ceil(#SemanticCastToInt(@I1))),#Ceil(#SemanticCastToInt(@I2))) requires #token("true","Bool") ensures #token("true","Bool") [anywhere, contentStartColumn(8), contentStartLine(1047), org.kframework.attributes.Location(Location(1047,8,1047,102)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule #Ceil(`_>>Int_`(#SemanticCastToInt(@I1),#SemanticCastToInt(@I2)))=>#And(#And(#Equals(`_>=Int_`(#SemanticCastToInt(@I2),#token("0","Int")),#token("true","Bool")),#Ceil(#SemanticCastToInt(@I1))),#Ceil(#SemanticCastToInt(@I2))) requires #token("true","Bool") ensures #token("true","Bool") [anywhere, contentStartColumn(8), contentStartLine(1048), org.kframework.attributes.Location(Location(1048,8,1048,102)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule #Ceil(`_<<Int_`(#SemanticCastToInt(@I1),#SemanticCastToInt(@I2)))=>#And(#And(#Equals(`_>=Int_`(#SemanticCastToInt(@I2),#token("0","Int")),#token("true","Bool")),#Ceil(#SemanticCastToInt(@I1))),#Ceil(#SemanticCastToInt(@I2))) requires #token("true","Bool") ensures #token("true","Bool") [anywhere, contentStartColumn(8), contentStartLine(1049), org.kframework.attributes.Location(Location(1049,8,1049,102)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule #Ceil(`_/Int_`(#SemanticCastToInt(@I1),#SemanticCastToInt(@I2)))=>#And(#And(#Equals(`_=/=Int_`(#SemanticCastToInt(@I2),#token("0","Int")),#token("true","Bool")),#Ceil(#SemanticCastToInt(@I1))),#Ceil(#SemanticCastToInt(@I2))) requires #token("true","Bool") ensures #token("true","Bool") [anywhere, contentStartColumn(8), contentStartLine(1045), org.kframework.attributes.Location(Location(1045,8,1045,102)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+  rule #Ceil(`_%Int_`(#SemanticCastToInt(@I1),#SemanticCastToInt(@I2)))=>#And(#And(#Equals(`_=/=Int_`(#SemanticCastToInt(@I2),#token("0","Int")),#token("true","Bool")),#Ceil(#SemanticCastToInt(@I1))),#Ceil(#SemanticCastToInt(@I2))) requires #token("true","Bool") ensures #token("true","Bool") [anywhere, contentStartColumn(8), contentStartLine(1046), org.kframework.attributes.Location(Location(1046,8,1046,102)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), simplification]
+endmodule
+
+
+module INT-SYMBOLIC-KORE$SYNTAX [kore, org.kframework.attributes.Location(Location(1040,1,1067,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports ML-SYNTAX$SYNTAX
+  imports INT-COMMON$SYNTAX
+endmodule
+
+
+module INT-SYNTAX [org.kframework.attributes.Location(Location(883,1,886,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports UNSIGNED-INT-SYNTAX
+  imports INT-SYNTAX$SYNTAX
+endmodule
+
+
+module INT-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(883,1,886,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports UNSIGNED-INT-SYNTAX$SYNTAX
+  syntax Int ::= r"[\\+-]?[0-9]+" [prec(2), prefer, token]
+endmodule
+
+
+module K [org.kframework.attributes.Location(Location(447,1,475,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-PREDICATES
+  imports REQUIRES-ENSURES
+  imports RECORD-PRODUCTIONS
+  imports KSEQ-SYMBOLIC
+  imports KREWRITE
+  imports K-SORT-LATTICE
+  imports K$SYNTAX
+  imports AUTO-FOLLOW
+  imports AUTO-CASTS
+endmodule
+
+
+module K$SYNTAX [org.kframework.attributes.Location(Location(447,1,475,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-PREDICATES$SYNTAX
+  imports REQUIRES-ENSURES$SYNTAX
+  imports RECORD-PRODUCTIONS$SYNTAX
+  imports KSEQ-SYMBOLIC$SYNTAX
+  imports KREWRITE$SYNTAX
+  imports K-SORT-LATTICE$SYNTAX
+  imports AUTO-FOLLOW$SYNTAX
+  imports AUTO-CASTS$SYNTAX
+  syntax {Sort} Sort ::= Sort "#as" Sort [klabel(#KAs), symbol]
+  syntax {Sort} Sort ::= "#fun" "(" Sort ")" "(" Sort ")" [klabel(#fun2), prefer, symbol]
+  syntax {Sort1, Sort2} Sort1 ::= "#fun" "(" Sort2 "=>" Sort1 ")" "(" Sort2 ")" [klabel(#fun3), symbol]
+  syntax associativity left _:=K_ _:/=K_
+  syntax Bool ::= K ":=K" K [equalEqualK, function, functional, klabel(_:=K_), symbol]
+  syntax Bool ::= K ":/=K" K [function, functional, klabel(_:/=K_), notEqualEqualK, symbol]
+endmodule
+
+
+module K-AMBIGUITIES [org.kframework.attributes.Location(Location(540,1,544,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports K-AMBIGUITIES$SYNTAX
+endmodule
+
+
+module K-AMBIGUITIES$SYNTAX [org.kframework.attributes.Location(Location(540,1,544,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax {Sort} Sort ::= "amb" "(" Sort "," Sort ")" [klabel(amb), symbol]
+endmodule
+
+
+module K-BOTTOM-SORT [org.kframework.attributes.Location(Location(362,1,366,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT
+  imports K-BOTTOM-SORT$SYNTAX
+endmodule
+
+
+module K-BOTTOM-SORT$SYNTAX [org.kframework.attributes.Location(Location(362,1,366,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT$SYNTAX
+  syntax {Sort} Sort ::= KBott
+  syntax KItem ::= KBott
+endmodule
+
+
+module K-EQUAL [org.kframework.attributes.Location(Location(2018,1,2029,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL-SYNTAX
+  imports K-EQUAL-KORE
+  imports K-EQUAL$SYNTAX
+  imports BOOL
+  rule `_=/=K_`(#SemanticCastToK(K1),#SemanticCastToK(K2))=>`notBool_`(`_==K_`(#SemanticCastToK(K1),#SemanticCastToK(K2))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2024), org.kframework.attributes.Location(Location(2024,8,2024,45)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `#if_#then_#else_#fi_K-EQUAL-SYNTAX_Sort_Bool_Sort_Sort`(#SemanticCastToBool(C),#SemanticCastToK(_),#SemanticCastToK(B2))=>#SemanticCastToK(B2) requires `notBool_`(#SemanticCastToBool(C)) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2027), org.kframework.attributes.Location(Location(2027,8,2027,67)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `#if_#then_#else_#fi_K-EQUAL-SYNTAX_Sort_Bool_Sort_Sort`(#SemanticCastToBool(C),#SemanticCastToK(B1),#SemanticCastToK(_))=>#SemanticCastToK(B1) requires #SemanticCastToBool(C) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2026), org.kframework.attributes.Location(Location(2026,8,2026,59)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+endmodule
+
+
+module K-EQUAL$SYNTAX [org.kframework.attributes.Location(Location(2018,1,2029,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL-SYNTAX$SYNTAX
+  imports K-EQUAL-KORE$SYNTAX
+  imports K-EQUAL-KAST$SYNTAX
+  imports BOOL$SYNTAX
+endmodule
+
+
+module K-EQUAL-KAST$SYNTAX [kast, org.kframework.attributes.Location(Location(2010,1,2016,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL-SYNTAX$SYNTAX
+  imports BOOL$SYNTAX
+endmodule
+
+
+module K-EQUAL-KORE [kore, org.kframework.attributes.Location(Location(2002,1,2008,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL-SYNTAX
+  imports K-EQUAL-KORE$SYNTAX
+  imports BOOL
+  rule `_==K_`(#SemanticCastToBool(K1),#SemanticCastToBool(K2))=>`_==Bool_`(#SemanticCastToBool(K1),#SemanticCastToBool(K2)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2006), org.kframework.attributes.Location(Location(2006,8,2006,43)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module K-EQUAL-KORE$SYNTAX [kore, org.kframework.attributes.Location(Location(2002,1,2008,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL-SYNTAX$SYNTAX
+  imports BOOL$SYNTAX
+endmodule
+
+
+module K-EQUAL-SYNTAX [org.kframework.attributes.Location(Location(1988,1,2000,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports K-EQUAL-SYNTAX$SYNTAX
+  imports BOOL
+  imports BASIC-K
+endmodule
+
+
+module K-EQUAL-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(1988,1,2000,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports BOOL$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax {Sort} Sort ::= "#if" Bool "#then" Sort "#else" Sort "#fi" [function, functional, hook(KEQUAL.ite), smt-hook(ite)]
+  syntax priority _:=K_ _=/=K_ _:/=K_ _==K_ > weakAlwaysFinally #And _orElseBool_ weakExistsFinally _orBool_ #Implies _andThenBool_ _impliesBool_ #Floor #Exists #Ceil _andBool_ #Forall #Not #Or notBool_ #AG #Equals _xorBool_
+  syntax associativity left _=/=K_ _==K_
+  syntax Bool ::= K "==K" K [equalEqualK, function, functional, hook(KEQUAL.eq), klabel(_==K_), latex({#1}\mathrel{=_K}{#2}), smt-hook(=), symbol]
+  syntax Bool ::= K "=/=K" K [function, functional, hook(KEQUAL.ne), klabel(_=/=K_), latex({#1}\mathrel{\neq_K}{#2}), notEqualEqualK, smt-hook(distinct), symbol]
+endmodule
+
+
+module K-IO [org.kframework.attributes.Location(Location(2101,1,2365,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING
+  imports LIST
+  imports K-IO$SYNTAX
+  rule `#stdout_K-IO_Int`(.KList)=>#token("1","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2304), org.kframework.attributes.Location(Location(2304,8,2304,20)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `#stdin_K-IO_Int`(.KList)=>#token("0","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2303), org.kframework.attributes.Location(Location(2303,8,2303,19)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `#stderr_K-IO_Int`(.KList)=>#token("2","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2305), org.kframework.attributes.Location(Location(2305,8,2305,20)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `#open(_)_K-IO_IOInt_String`(#SemanticCastToString(S))=>`#open(_,_)_K-IO_IOInt_String_String`(#SemanticCastToString(S),#token("\"r+\"","String")) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2208), org.kframework.attributes.Location(Location(2208,8,2208,48)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module K-IO$SYNTAX [org.kframework.attributes.Location(Location(2101,1,2365,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING$SYNTAX
+  imports LIST$SYNTAX
+  syntax Stream ::= "#buffer" "(" K ")" [klabel(#buffer)]
+  syntax KItem ::= "#systemResult" "(" Int "," String "," String ")" [klabel(#systemResult), symbol]
+  syntax KItem ::= "#system" "(" String ")" [function, hook(IO.system), impure, klabel(#system)]
+  syntax K ::= "#write" "(" Int "," String ")" [function, hook(IO.write), impure]
+  syntax K ::= "#unlock" "(" Int "," Int ")" [function, hook(IO.unlock), impure]
+  syntax K ::= "#shutdownWrite" "(" Int ")" [function, hook(IO.shutdownWrite), impure]
+  syntax K ::= "#seekEnd" "(" Int "," Int ")" [function, hook(IO.seekEnd), impure]
+  syntax K ::= "#seek" "(" Int "," Int ")" [function, hook(IO.seek), impure]
+  syntax K ::= "#remove" "(" String ")" [function, functional, hook(IO.remove), impure, klabel(#remove)]
+  syntax K ::= "#putc" "(" Int "," Int ")" [function, hook(IO.putc), impure]
+  syntax K ::= "#logToFile" "(" String "," String ")" [function, functional, hook(IO.log), impure, klabel(#logToFile), returnsUnit, symbol]
+  syntax K ::= "#lock" "(" Int "," Int ")" [function, hook(IO.lock), impure]
+  syntax K ::= "#close" "(" Int ")" [function, hook(IO.close), impure]
+  syntax Int ::= "#time" "(" ")" [function, hook(IO.time), impure]
+  syntax Int ::= "#stdout" [function, functional]
+  syntax Int ::= "#stdin" [function, functional]
+  syntax Int ::= "#stderr" [function, functional]
+  syntax IOString ::= String
+  syntax IOString ::= IOError
+  syntax IOString ::= "#read" "(" Int "," Int ")" [function, hook(IO.read), impure]
+  syntax IOInt ::= Int
+  syntax IOInt ::= IOError
+  syntax IOInt ::= "#tell" "(" Int ")" [function, hook(IO.tell), impure]
+  syntax IOInt ::= "#open" "(" String "," String ")" [function, hook(IO.open), impure]
+  syntax IOInt ::= "#open" "(" String ")" [function]
+  syntax IOInt ::= "#getc" "(" Int ")" [function, hook(IO.getc), impure]
+  syntax IOInt ::= "#accept" "(" Int ")" [function, hook(IO.accept), impure]
+  syntax IOFile ::= IOError
+  syntax IOFile ::= "#tempFile" "(" String "," Int ")" [klabel(#tempFile), symbol]
+  syntax IOFile ::= "#mkstemp" "(" String ")" [function, hook(IO.mkstemp), impure, klabel(#mkstemp)]
+  syntax IOError ::= "#unknownIOError" "(" Int ")" [klabel(#unknownIOError), symbol]
+  syntax IOError ::= "#EXDEV" [klabel(#EXDEV), symbol]
+  syntax IOError ::= "#EWOULDBLOCK" [klabel(#EWOULDBLOCK), symbol]
+  syntax IOError ::= "#ETOOMANYREFS" [klabel(#ETOOMANYREFS), symbol]
+  syntax IOError ::= "#ETIMEDOUT" [klabel(#ETIMEDOUT), symbol]
+  syntax IOError ::= "#ESRCH" [klabel(#ESRCH), symbol]
+  syntax IOError ::= "#ESPIPE" [klabel(#ESPIPE), symbol]
+  syntax IOError ::= "#ESOCKTNOSUPPORT" [klabel(#ESOCKTNOSUPPORT), symbol]
+  syntax IOError ::= "#ESHUTDOWN" [klabel(#ESHUTDOWN), symbol]
+  syntax IOError ::= "#EROFS" [klabel(#EROFS), symbol]
+  syntax IOError ::= "#ERANGE" [klabel(#ERANGE), symbol]
+  syntax IOError ::= "#EPROTOTYPE" [klabel(#EPROTOTYPE), symbol]
+  syntax IOError ::= "#EPROTONOSUPPORT" [klabel(#EPROTONOSUPPORT), symbol]
+  syntax IOError ::= "#EPIPE" [klabel(#EPIPE), symbol]
+  syntax IOError ::= "#EPFNOSUPPORT" [klabel(#EPFNOSUPPORT), symbol]
+  syntax IOError ::= "#EPERM" [klabel(#EPERM), symbol]
+  syntax IOError ::= "#EOVERFLOW" [klabel(#EOVERFLOW), symbol]
+  syntax IOError ::= "#EOPNOTSUPP" [klabel(#EOPNOTSUPP), symbol]
+  syntax IOError ::= "#EOF" [klabel(#EOF), symbol]
+  syntax IOError ::= "#ENXIO" [klabel(#ENXIO), symbol]
+  syntax IOError ::= "#ENOTTY" [klabel(#ENOTTY), symbol]
+  syntax IOError ::= "#ENOTSOCK" [klabel(#ENOTSOCK), symbol]
+  syntax IOError ::= "#ENOTEMPTY" [klabel(#ENOTEMPTY), symbol]
+  syntax IOError ::= "#ENOTDIR" [klabel(#ENOTDIR), symbol]
+  syntax IOError ::= "#ENOTCONN" [klabel(#ENOTCONN), symbol]
+  syntax IOError ::= "#ENOSYS" [klabel(#ENOSYS), symbol]
+  syntax IOError ::= "#ENOSPC" [klabel(#ENOSPC), symbol]
+  syntax IOError ::= "#ENOPROTOOPT" [klabel(#ENOPROTOOPT), symbol]
+  syntax IOError ::= "#ENOMEM" [klabel(#ENOMEM), symbol]
+  syntax IOError ::= "#ENOLCK" [klabel(#ENOLCK), symbol]
+  syntax IOError ::= "#ENOEXEC" [klabel(#ENOEXEC), symbol]
+  syntax IOError ::= "#ENOENT" [klabel(#ENOENT), symbol]
+  syntax IOError ::= "#ENODEV" [klabel(#ENODEV), symbol]
+  syntax IOError ::= "#ENOBUFS" [klabel(#ENOBUFS), symbol]
+  syntax IOError ::= "#ENFILE" [klabel(#ENFILE), symbol]
+  syntax IOError ::= "#ENETUNREACH" [klabel(#ENETUNREACH), symbol]
+  syntax IOError ::= "#ENETRESET" [klabel(#ENETRESET), symbol]
+  syntax IOError ::= "#ENETDOWN" [klabel(#ENETDOWN), symbol]
+  syntax IOError ::= "#ENAMETOOLONG" [klabel(#ENAMETOOLONG), symbol]
+  syntax IOError ::= "#EMSGSIZE" [klabel(#EMSGSIZE), symbol]
+  syntax IOError ::= "#EMLINK" [klabel(#EMLINK), symbol]
+  syntax IOError ::= "#EMFILE" [klabel(#EMFILE), symbol]
+  syntax IOError ::= "#ELOOP" [klabel(#ELOOP), symbol]
+  syntax IOError ::= "#EISDIR" [klabel(#EISDIR), symbol]
+  syntax IOError ::= "#EISCONN" [klabel(#EISCONN), symbol]
+  syntax IOError ::= "#EIO" [klabel(#EIO), symbol]
+  syntax IOError ::= "#EINVAL" [klabel(#EINVAL), symbol]
+  syntax IOError ::= "#EINTR" [klabel(#EINTR), symbol]
+  syntax IOError ::= "#EINPROGRESS" [klabel(#EINPROGRESS), symbol]
+  syntax IOError ::= "#EHOSTUNREACH" [klabel(#EHOSTUNREACH), symbol]
+  syntax IOError ::= "#EHOSTDOWN" [klabel(#EHOSTDOWN), symbol]
+  syntax IOError ::= "#EFBIG" [klabel(#EFBIG), symbol]
+  syntax IOError ::= "#EFAULT" [klabel(#EFAULT), symbol]
+  syntax IOError ::= "#EEXIST" [klabel(#EEXIST), symbol]
+  syntax IOError ::= "#EDOM" [klabel(#EDOM), symbol]
+  syntax IOError ::= "#EDESTADDRREQ" [klabel(#EDESTADDRREQ), symbol]
+  syntax IOError ::= "#EDEADLK" [klabel(#EDEADLK), symbol]
+  syntax IOError ::= "#ECONNRESET" [klabel(#ECONNRESET), symbol]
+  syntax IOError ::= "#ECONNREFUSED" [klabel(#ECONNREFUSED), symbol]
+  syntax IOError ::= "#ECONNABORTED" [klabel(#ECONNABORTED), symbol]
+  syntax IOError ::= "#ECHILD" [klabel(#ECHILD), symbol]
+  syntax IOError ::= "#EBUSY" [klabel(#EBUSY), symbol]
+  syntax IOError ::= "#EBADF" [klabel(#EBADF), symbol]
+  syntax IOError ::= "#EALREADY" [klabel(#EALREADY), symbol]
+  syntax IOError ::= "#EAGAIN" [klabel(#EAGAIN), symbol]
+  syntax IOError ::= "#EAFNOSUPPORT" [klabel(#EAFNOSUPPORT), symbol]
+  syntax IOError ::= "#EADDRNOTAVAIL" [klabel(#EADDRNOTAVAIL), symbol]
+  syntax IOError ::= "#EADDRINUSE" [klabel(#EADDRINUSE), symbol]
+  syntax IOError ::= "#EACCES" [klabel(#EACCES), symbol]
+  syntax IOError ::= "#E2BIG" [klabel(#E2BIG), symbol]
+endmodule
+
+
+module K-LOCATIONS [org.kframework.attributes.Location(Location(557,1,564,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports STRING-SYNTAX
+  imports K-LOCATIONS$SYNTAX
+  imports INT-SYNTAX
+endmodule
+
+
+module K-LOCATIONS$SYNTAX [org.kframework.attributes.Location(Location(557,1,564,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports STRING-SYNTAX$SYNTAX
+  imports INT-SYNTAX$SYNTAX
+  syntax {Sort} Sort ::= "#location" "(" Sort "," String "," Int "," Int "," Int "," Int ")" [format(%3), klabel(#location), symbol]
+endmodule
+
+
+module K-REFLECTION [org.kframework.attributes.Location(Location(2047,1,2068,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING
+  imports K-REFLECTION$SYNTAX
+  imports BASIC-K
+endmodule
+
+
+module K-REFLECTION$SYNTAX [org.kframework.attributes.Location(Location(2047,1,2068,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax {Sort} Sort ::= "#parseKORE" "(" String ")" [function, hook(KREFLECTION.parseKORE), klabel(#parseKORE)]
+  syntax {Sort} Sort ::= "#parseKAST" "(" String ")" [function, hook(KREFLECTION.parseKAST), klabel(#parseKAST)]
+  syntax String ::= "#sort" "(" K ")" [function, hook(KREFLECTION.sort), klabel(#sort)]
+  syntax List ::= "#argv" "(" ")" [function, hook(KREFLECTION.argv), klabel(#argv)]
+  syntax KItem ::= "getKLabel" "(" K ")" [function, hook(KREFLECTION.getKLabel), klabel(getKLabel)]
+  syntax KItem ::= "#fresh" "(" String ")" [function, hook(KREFLECTION.fresh), impure, klabel(#fresh)]
+  syntax K ::= "#getenv" "(" String ")" [function, hook(KREFLECTION.getenv), impure, klabel(#getenv)]
+  syntax K ::= "#configuration" [function, hook(KREFLECTION.configuration), impure]
+  syntax IOError ::= "#noParse" "(" String ")" [klabel(#noParse), symbol]
+endmodule
+
+
+module K-SORT-LATTICE [org.kframework.attributes.Location(Location(368,1,371,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports K-TOP-SORT
+  imports K-SORT-LATTICE$SYNTAX
+  imports K-BOTTOM-SORT
+endmodule
+
+
+module K-SORT-LATTICE$SYNTAX [org.kframework.attributes.Location(Location(368,1,371,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports K-TOP-SORT$SYNTAX
+  imports K-BOTTOM-SORT$SYNTAX
+endmodule
+
+
+module K-TERM [org.kframework.attributes.Location(Location(478,1,486,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-PREDICATES
+  imports RECORD-PRODUCTIONS
+  imports KSEQ-SYMBOLIC
+  imports KREWRITE
+  imports K-TERM$SYNTAX
+  imports K-SORT-LATTICE
+  imports AUTO-FOLLOW
+  imports AUTO-CASTS
+endmodule
+
+
+module K-TERM$SYNTAX [org.kframework.attributes.Location(Location(478,1,486,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-PREDICATES$SYNTAX
+  imports RECORD-PRODUCTIONS$SYNTAX
+  imports KSEQ-SYMBOLIC$SYNTAX
+  imports KREWRITE$SYNTAX
+  imports K-SORT-LATTICE$SYNTAX
+  imports AUTO-FOLLOW$SYNTAX
+  imports AUTO-CASTS$SYNTAX
+endmodule
+
+
+module K-TOP-SORT [org.kframework.attributes.Location(Location(356,1,360,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT
+  imports K-TOP-SORT$SYNTAX
+endmodule
+
+
+module K-TOP-SORT$SYNTAX [org.kframework.attributes.Location(Location(356,1,360,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT$SYNTAX
+  syntax {Sort} KItem ::= Sort
+  syntax KItem ::= KBott
+endmodule
+
+
+module KAST [org.kframework.attributes.Location(Location(72,1,92,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT
+  imports KSTRING
+  imports KAST$SYNTAX
+  imports BUILTIN-ID-TOKENS
+  imports BASIC-K
+endmodule
+
+
+module KAST$SYNTAX [org.kframework.attributes.Location(Location(72,1,92,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT$SYNTAX
+  imports KSTRING$SYNTAX
+  imports BUILTIN-ID-TOKENS$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax associativity left #KList
+  syntax KList ::= KList "," KList [assoc, klabel(#KList), left, prefer, symbol, unit(#EmptyKList)]
+  syntax KList ::= K
+  syntax KList ::= ".KList" [klabel(#EmptyKList), symbol]
+  syntax KList ::= ".::KList" [klabel(#EmptyKList), symbol]
+  syntax KLabel ::= r"`(\\\\`|\\\\\\\\|[^`\\\\\\n\\r])+`" [token]
+  syntax KLabel ::= r"(?<![a-zA-Z0-9])[#a-z][a-zA-Z0-9]*" [prec(1), token]
+  syntax KLabel ::= #LowerId [token]
+  syntax KItem ::= KBott
+  syntax KBott ::= KLabel "(" KList ")" [klabel(#KApply), symbol]
+  syntax KBott ::= "#token" "(" KString "," KString ")" [klabel(#KToken), symbol]
+  syntax KBott ::= "#klabel" "(" KLabel ")" [klabel(#WrappedKLabel), symbol]
+endmodule
+
+
+module KCELLS [org.kframework.attributes.Location(Location(240,1,253,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KCELLS$SYNTAX
+  imports KAST
+endmodule
+
+
+module KCELLS$SYNTAX [org.kframework.attributes.Location(Location(240,1,253,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KAST$SYNTAX
+  syntax associativity non-assoc #withConfig
+  syntax associativity left #cells
+  syntax KItem ::= Bag
+  syntax Cell [org.kframework.attributes.Location(Location(243,3,243,13)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax Bag ::= KBott
+  syntax Bag ::= Cell
+  syntax Bag ::= Bag Bag [assoc, klabel(#cells), left, symbol, unit(#cells)]
+  syntax Bag ::= ".Bag" [klabel(#cells), symbol]
+  syntax Bag ::= ".::Bag" [klabel(#cells), symbol]
+  syntax Bag ::= "(" Bag ")" [bracket, bracketLabel((_)_KCELLS_Bag_Bag)]
+  syntax #RuleBody ::= "[" "[" K "]" "]" Bag [avoid, klabel(#withConfig), symbol]
+endmodule
+
+
+module KREWRITE [org.kframework.attributes.Location(Location(440,1,444,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KREWRITE$SYNTAX
+endmodule
+
+
+module KREWRITE$SYNTAX [org.kframework.attributes.Location(Location(440,1,444,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax {Sort} Sort ::= Sort "=>" Sort [klabel(#KRewrite), symbol]
+  syntax priority #KRewrite > #withConfig
+  syntax associativity non-assoc #KRewrite
+endmodule
+
+
+module KSEQ [org.kframework.attributes.Location(Location(96,1,105,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KSEQ$SYNTAX
+  imports KAST
+  imports K-TOP-SORT
+endmodule
+
+
+module KSEQ$SYNTAX [org.kframework.attributes.Location(Location(96,1,105,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KAST$SYNTAX
+  imports K-TOP-SORT$SYNTAX
+  syntax {Sort} Sort ::= "(" Sort ")" [bracket, bracketLabel((_)_KSEQ_Sort_Sort{Sort})]
+  syntax associativity left #KSequence
+  syntax K ::= K "~>" K [assoc, klabel(#KSequence), left, symbol, unit(#EmptyK)]
+  syntax K ::= ".K" [klabel(#EmptyK), symbol, unparseAvoid]
+  syntax K ::= ".::K" [klabel(#EmptyK), symbol, unparseAvoid]
+  syntax K ::= "." [klabel(#EmptyK), symbol]
+endmodule
+
+
+module KSEQ-SYMBOLIC [org.kframework.attributes.Location(Location(205,1,216,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports ML-SYNTAX
+  imports KVARIABLE-SYNTAX
+  imports KSEQ-SYMBOLIC$SYNTAX
+  imports KSEQ
+endmodule
+
+
+module KSEQ-SYMBOLIC$SYNTAX [org.kframework.attributes.Location(Location(205,1,216,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports ML-SYNTAX$SYNTAX
+  imports KVARIABLE-SYNTAX$SYNTAX
+  imports KSEQ$SYNTAX
+  syntax KLabel ::= #KVariable
+  syntax KConfigVar ::= r"(?<![A-Za-z0-9_\\$!\\?@])(\\$)([A-Z][A-Za-z0-9'_]*)" [token]
+  syntax KBott ::= KConfigVar
+  syntax KBott ::= #KVariable
+  syntax #KVariable ::= r"(?<![A-Za-z0-9_\\$!\\?@])(\\!|\\?|@)?([A-Z][A-Za-z0-9'_]*|_|_[A-Z][A-Za-z0-9'_]*)" [prec(1), token]
+  syntax #KVariable ::= #UpperId [token]
+endmodule
+
+
+module KSTRING [org.kframework.attributes.Location(Location(57,1,60,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KSTRING$SYNTAX
+endmodule
+
+
+module KSTRING$SYNTAX [org.kframework.attributes.Location(Location(57,1,60,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax KString ::= r"[\\\"](([^\\\"\\n\\r\\\\])|([\\\\][nrtf\\\"\\\\])|([\\\\][x][0-9a-fA-F]{2})|([\\\\][u][0-9a-fA-F]{4})|([\\\\][U][0-9a-fA-F]{8}))*[\\\"]" [token]
+endmodule
+
+
+module KVARIABLE-SYNTAX [org.kframework.attributes.Location(Location(200,1,202,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports KVARIABLE-SYNTAX$SYNTAX
+endmodule
+
+
+module KVARIABLE-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(200,1,202,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax #KVariable [org.kframework.attributes.Location(Location(201,3,201,19)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module LIST [not-lr1, org.kframework.attributes.Location(Location(618,1,733,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports LIST$SYNTAX
+  imports INT-SYNTAX
+  imports BASIC-K
+endmodule
+
+
+module LIST$SYNTAX [not-lr1, org.kframework.attributes.Location(Location(618,1,733,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports INT-SYNTAX$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax associativity left _List_
+  syntax List [hook(LIST.List), org.kframework.attributes.Location(Location(622,3,622,31)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax List ::= List List [assoc, element(ListItem), format(%1%n%2), function, functional, hook(LIST.concat), klabel(_List_), left, smtlib(smt_seq_concat), symbol, unit(.List)]
+  syntax List ::= List "[" Int "<-" KItem "]" [function, hook(LIST.update), klabel(List:set)]
+  syntax List ::= "updateList" "(" List "," Int "," List ")" [function, hook(LIST.updateAll), klabel(updateList)]
+  syntax List ::= "range" "(" List "," Int "," Int ")" [function, hook(LIST.range), klabel(List:range), symbol]
+  syntax List ::= "makeList" "(" Int "," KItem ")" [function, hook(LIST.make), klabel(makeList)]
+  syntax List ::= "fillList" "(" List "," Int "," Int "," KItem ")" [function, hook(LIST.fill), klabel(fillList)]
+  syntax List ::= "ListItem" "(" KItem ")" [function, functional, hook(LIST.element), klabel(ListItem), smtlib(smt_seq_elem), symbol]
+  syntax List ::= ".List" [function, functional, hook(LIST.unit), klabel(.List), latex(\dotCt{List}), smtlib(smt_seq_nil), symbol]
+  syntax KItem ::= List "[" Int "]" [function, hook(LIST.get), klabel(List:get), symbol]
+  syntax Int ::= "size" "(" List ")" [function, functional, hook(LIST.size), klabel(sizeList), smtlib(smt_seq_len)]
+  syntax Bool ::= KItem "in" List [function, functional, hook(LIST.in), klabel(_inList_)]
+endmodule
+
+
+module MAP [org.kframework.attributes.Location(Location(216,1,408,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SET
+  imports MAP$SYNTAX
+  imports LIST
+  imports INT-SYNTAX
+  imports BOOL-SYNTAX
+endmodule
+
+
+module MAP$SYNTAX [org.kframework.attributes.Location(Location(216,1,408,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SET$SYNTAX
+  imports LIST$SYNTAX
+  imports INT-SYNTAX$SYNTAX
+  imports BOOL-SYNTAX$SYNTAX
+  syntax priority _|->_ > .Map _Map_
+  syntax associativity non-assoc _|->_
+  syntax associativity left _Map_
+  syntax Set ::= "keys" "(" Map ")" [function, functional, hook(MAP.keys), klabel(keys)]
+  syntax Map [hook(MAP.Map), org.kframework.attributes.Location(Location(222,3,222,28)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Map ::= Map Map [assoc, comm, element(_|->_), format(%1%n%2), function, hook(MAP.concat), index(0), klabel(_Map_), left, symbol, unit(.Map)]
+  syntax Map ::= Map "[" KItem "<-" KItem "]" [function, functional, hook(MAP.update), klabel(Map:update), prefer, symbol]
+  syntax Map ::= Map "[" KItem "<-" "undef" "]" [function, functional, hook(MAP.remove), klabel(_[_<-undef]), symbol]
+  syntax Map ::= Map "-Map" Map [function, functional, hook(MAP.difference), latex({#1}-_{\it Map}{#2})]
+  syntax Map ::= KItem "|->" KItem [function, functional, hook(MAP.element), klabel(_|->_), latex({#1}\mapsto{#2}), symbol]
+  syntax Map ::= "updateMap" "(" Map "," Map ")" [function, functional, hook(MAP.updateAll), klabel(updateMap)]
+  syntax Map ::= "removeAll" "(" Map "," Set ")" [function, functional, hook(MAP.removeAll), klabel(removeAll)]
+  syntax Map ::= ".Map" [function, functional, hook(MAP.unit), klabel(.Map), latex(\dotCt{Map}), symbol]
+  syntax List ::= "values" "(" Map ")" [function, hook(MAP.values), klabel(values)]
+  syntax List ::= "keys_list" "(" Map ")" [function, hook(MAP.keys_list)]
+  syntax KItem ::= Map "[" KItem "]" [function, hook(MAP.lookup), klabel(Map:lookup), symbol]
+  syntax KItem ::= Map "[" KItem "]" "orDefault" KItem [function, functional, hook(MAP.lookupOrDefault), klabel(Map:lookupOrDefault)]
+  syntax KItem ::= "choice" "(" Map ")" [function, hook(MAP.choice), klabel(Map:choice)]
+  syntax Int ::= "size" "(" Map ")" [function, functional, hook(MAP.size), klabel(sizeMap)]
+  syntax Bool ::= Map "<=Map" Map [function, functional, hook(MAP.inclusion)]
+  syntax Bool ::= KItem "in_keys" "(" Map ")" [function, functional, hook(MAP.in_keys)]
+endmodule
+
+
+module MAP-KORE-SYMBOLIC$SYNTAX [kore, org.kframework.attributes.Location(Location(410,1,449,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports MAP$SYNTAX
+  imports K-EQUAL$SYNTAX
+endmodule
+
+
+module MAP-SYMBOLIC$SYNTAX [org.kframework.attributes.Location(Location(477,1,480,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports MAP-KORE-SYMBOLIC$SYNTAX
+endmodule
+
+
+module MINT$SYNTAX [org.kframework.attributes.Location(Location(2565,1,2728,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports MINT-SYNTAX$SYNTAX
+  imports INT$SYNTAX
+  syntax {Width} MInt{Width} ::= MInt{Width} "|MInt" MInt{Width} [function, functional, hook(MINT.or), smt-hook(bvor)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "xorMInt" MInt{Width} [function, functional, hook(MINT.xor), smt-hook(bvxor)]
+  syntax {Width} MInt{Width} ::= MInt{Width} ">>lMInt" MInt{Width} [function, hook(MINT.lshr), smt-hook(bvlshr)]
+  syntax {Width} MInt{Width} ::= MInt{Width} ">>aMInt" MInt{Width} [function, hook(MINT.ashr), smt-hook(bvashr)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "<<MInt" MInt{Width} [function, hook(MINT.shl), smt-hook(bvshl)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "/uMInt" MInt{Width} [function, hook(MINT.udiv), smt-hook(bvudiv)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "/sMInt" MInt{Width} [function, hook(MINT.sdiv), smt-hook(bvsdiv)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "-MInt" MInt{Width} [function, functional, hook(MINT.sub), smt-hook(bvsub)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "+MInt" MInt{Width} [function, functional, hook(MINT.add), smt-hook(bvadd)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "*MInt" MInt{Width} [function, functional, hook(MINT.mul), smt-hook(bvmul)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "&MInt" MInt{Width} [function, functional, hook(MINT.and), smt-hook(bvand)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "%uMInt" MInt{Width} [function, hook(MINT.urem), smt-hook(bvurem)]
+  syntax {Width} MInt{Width} ::= MInt{Width} "%sMInt" MInt{Width} [function, hook(MINT.srem), smt-hook(bvsrem)]
+  syntax {Width} MInt{Width} ::= "~MInt" MInt{Width} [function, functional, hook(MINT.not), smt-hook(bvnot)]
+  syntax {Width} MInt{Width} ::= "uMinMInt" "(" MInt{Width} "," MInt{Width} ")" [function, functional, hook(MINT.umin), klabel(uMinMInt), smt-hook((ite (bvult #1 #2) #1 #2))]
+  syntax {Width} MInt{Width} ::= "uMaxMInt" "(" MInt{Width} "," MInt{Width} ")" [function, functional, hook(MINT.umax), klabel(uMaxMInt), smt-hook((ite (bvult #1 #2) #2 #1))]
+  syntax {Width} MInt{Width} ::= "sMinMInt" "(" MInt{Width} "," MInt{Width} ")" [function, functional, hook(MINT.smin), klabel(sMinMInt), smt-hook((ite (bvslt #1 #2) #1 #2))]
+  syntax {Width} MInt{Width} ::= "sMaxMInt" "(" MInt{Width} "," MInt{Width} ")" [function, functional, hook(MINT.smax), klabel(sMaxMInt), smt-hook((ite (bvslt #1 #2) #2 #1))]
+  syntax {Width} MInt{Width} ::= "Int2MInt" "(" Int ")" [function, functional, hook(MINT.integer), klabel(Int2MInt), smt-hook(int2bv)]
+  syntax {Width} MInt{Width} ::= "--MInt" MInt{Width} [function, functional, hook(MINT.neg), smt-hook(bvuminus)]
+  syntax {Width} Int ::= "bitwidthMInt" "(" MInt{Width} ")" [function, functional, hook(MINT.bitwidth), klabel(bitwidthMInt)]
+  syntax {Width} Int ::= "MInt2Unsigned" "(" MInt{Width} ")" [function, functional, hook(MINT.uvalue), klabel(MInt2Unsigned), smt-hook(bv2int)]
+  syntax {Width} Int ::= "MInt2Signed" "(" MInt{Width} ")" [function, functional, hook(MINT.svalue), klabel(MInt2Signed)]
+  syntax {Width} Bool ::= MInt{Width} ">uMInt" MInt{Width} [function, functional, hook(MINT.ugt), smt-hook(bvugt)]
+  syntax {Width} Bool ::= MInt{Width} ">sMInt" MInt{Width} [function, functional, hook(MINT.sgt), smt-hook(bvsgt)]
+  syntax {Width} Bool ::= MInt{Width} ">=uMInt" MInt{Width} [function, functional, hook(MINT.uge), smt-hook(bvuge)]
+  syntax {Width} Bool ::= MInt{Width} ">=sMInt" MInt{Width} [function, functional, hook(MINT.sge), smt-hook(bvsge)]
+  syntax {Width} Bool ::= MInt{Width} "==MInt" MInt{Width} [function, functional, hook(MINT.eq), smt-hook(=)]
+  syntax {Width} Bool ::= MInt{Width} "=/=MInt" MInt{Width} [function, functional, hook(MINT.ne), smt-hook(distinct)]
+  syntax {Width} Bool ::= MInt{Width} "<uMInt" MInt{Width} [function, functional, hook(MINT.ult), smt-hook(bvult)]
+  syntax {Width} Bool ::= MInt{Width} "<sMInt" MInt{Width} [function, functional, hook(MINT.slt), smt-hook(bvslt)]
+  syntax {Width} Bool ::= MInt{Width} "<=uMInt" MInt{Width} [function, functional, hook(MINT.ule), smt-hook(bvule)]
+  syntax {Width} Bool ::= MInt{Width} "<=sMInt" MInt{Width} [function, functional, hook(MINT.sle), smt-hook(bvsle)]
+  syntax {Width1, Width2} MInt{Width1} ::= "roundMInt" "(" MInt{Width2} ")" [function, functional, hook(MINT.round), klabel(roundMInt)]
+  syntax priority --MInt__MINT_MInt_MInt ~MInt__MINT_MInt_MInt > _/sMInt__MINT_MInt_MInt_MInt _*MInt__MINT_MInt_MInt_MInt _/uMInt__MINT_MInt_MInt_MInt _%uMInt__MINT_MInt_MInt_MInt _%sMInt__MINT_MInt_MInt_MInt > _+MInt__MINT_MInt_MInt_MInt _-MInt__MINT_MInt_MInt_MInt > _<<MInt__MINT_MInt_MInt_MInt _>>aMInt__MINT_MInt_MInt_MInt _>>lMInt__MINT_MInt_MInt_MInt > _&MInt__MINT_MInt_MInt_MInt > _xorMInt__MINT_MInt_MInt_MInt > _|MInt__MINT_MInt_MInt_MInt
+  syntax associativity left _|MInt__MINT_MInt_MInt_MInt
+  syntax associativity left _xorMInt__MINT_MInt_MInt_MInt
+  syntax associativity left _<<MInt__MINT_MInt_MInt_MInt _>>aMInt__MINT_MInt_MInt_MInt _>>lMInt__MINT_MInt_MInt_MInt
+  syntax associativity left _/sMInt__MINT_MInt_MInt_MInt _*MInt__MINT_MInt_MInt_MInt _/uMInt__MINT_MInt_MInt_MInt _%uMInt__MINT_MInt_MInt_MInt _%sMInt__MINT_MInt_MInt_MInt
+  syntax associativity left _+MInt__MINT_MInt_MInt_MInt _-MInt__MINT_MInt_MInt_MInt
+  syntax associativity left _&MInt__MINT_MInt_MInt_MInt
+  syntax Int ::= "uminMInt" "(" Int ")" [function, klabel(uminMInt)]
+  syntax Int ::= "umaxMInt" "(" Int ")" [function, klabel(umaxMInt)]
+  syntax Int ::= "sminMInt" "(" Int ")" [function, klabel(sminMInt)]
+  syntax Int ::= "smaxMInt" "(" Int ")" [function, klabel(smaxMInt)]
+  syntax Bool ::= "uoverflowMInt" "(" Int "," Int ")" [function, klabel(uoverflowMInt)]
+  syntax Bool ::= "soverflowMInt" "(" Int "," Int ")" [function, klabel(soverflowMInt)]
+endmodule
+
+
+module MINT-SYNTAX [org.kframework.attributes.Location(Location(2556,1,2563,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports MINT-SYNTAX$SYNTAX
+endmodule
+
+
+module MINT-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(2556,1,2563,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax {Width} MInt{Width} ::= r"[\\+-]?[0-9]+[pP][0-9]+" [hook(MINT.literal), prec(2), token]
+  syntax MInt{Width} [hook(MINT.MInt), org.kframework.attributes.Location(Location(2559,3,2559,46)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+endmodule
+
+
+module ML-SYNTAX [org.kframework.attributes.Location(Location(137,1,164,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-K
+  imports ML-SYNTAX$SYNTAX
+endmodule
+
+
+module ML-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(137,1,164,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-K$SYNTAX
+  syntax {Sort} Sort ::= Sort "#Or" Sort [assoc, comm, format(%i%1%d%n%2%n%i%3%d), klabel(#Or), left, mlOp, symbol, unit(#Bottom)]
+  syntax {Sort} Sort ::= Sort "#Implies" Sort [format(%i%1%d%n%2%n%i%3%d), klabel(#Implies), mlImplies, mlOp, symbol]
+  syntax {Sort} Sort ::= Sort "#And" Sort [assoc, comm, format(%i%1%d%n%2%n%i%3%d), klabel(#And), left, mlAnd, mlOp, symbol, unit(#Top)]
+  syntax {Sort} Sort ::= "#wEF" "(" Sort ")" [klabel(weakExistsFinally), mlOp, symbol]
+  syntax {Sort} Sort ::= "#wAF" "(" Sort ")" [klabel(weakAlwaysFinally), mlOp, symbol]
+  syntax {Sort} Sort ::= "#True" [klabel(#Top), mlUnary, symbol, unparseAvoid]
+  syntax {Sort} Sort ::= "#Top" [klabel(#Top), mlUnary, symbol]
+  syntax {Sort} Sort ::= "#Not" "(" Sort ")" [klabel(#Not), mlOp, mlUnary, symbol]
+  syntax {Sort} Sort ::= "#False" [klabel(#Bottom), mlUnary, symbol, unparseAvoid]
+  syntax {Sort} Sort ::= "#Bottom" [klabel(#Bottom), mlUnary, symbol]
+  syntax {Sort} Sort ::= "#AG" "(" Sort ")" [klabel(#AG), mlOp, symbol]
+  syntax {Sort1, Sort2} Sort2 ::= "{" Sort1 "#Equals" Sort1 "}" [format(%1%i%n%2%d%n%3%i%n%4%d%n%5), klabel(#Equals), mlEquals, mlOp, symbol]
+  syntax {Sort1, Sort2} Sort2 ::= "#Forall" Sort1 "." Sort2 [klabel(#Forall), mlBinder, mlOp, mlQuantifier, symbol]
+  syntax {Sort1, Sort2} Sort2 ::= "#Floor" "(" Sort1 ")" [klabel(#Floor), mlOp, mlUnary, symbol]
+  syntax {Sort1, Sort2} Sort2 ::= "#Exists" Sort1 "." Sort2 [klabel(#Exists), mlBinder, mlOp, mlQuantifier, symbol]
+  syntax {Sort1, Sort2} Sort2 ::= "#Ceil" "(" Sort1 ")" [klabel(#Ceil), mlOp, mlUnary, symbol]
+  syntax priority #Top #Floor #Ceil #Not #Bottom > #Equals > #And
+  syntax priority #Implies > #Exists #Forall
+  syntax priority #And > #Or > #Implies
+  syntax associativity left #Or
+  syntax associativity left #And
+endmodule
+
+
+module PROGRAM-LISTS [org.kframework.attributes.Location(Location(396,1,408,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-K
+  imports PROGRAM-LISTS$SYNTAX
+endmodule
+
+
+module PROGRAM-LISTS$SYNTAX [org.kframework.attributes.Location(Location(396,1,408,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-K$SYNTAX
+endmodule
+
+
+module RECORD-PRODUCTIONS [org.kframework.attributes.Location(Location(417,1,422,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports RECORD-PRODUCTIONS$SYNTAX
+endmodule
+
+
+module RECORD-PRODUCTIONS$SYNTAX [org.kframework.attributes.Location(Location(417,1,422,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module REQUIRES-ENSURES [org.kframework.attributes.Location(Location(334,1,345,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports REQUIRES-ENSURES$SYNTAX
+  imports BASIC-K
+endmodule
+
+
+module REQUIRES-ENSURES$SYNTAX [org.kframework.attributes.Location(Location(334,1,345,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports BASIC-K$SYNTAX
+  syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]
+  syntax #RuleContent ::= #RuleBody "when" Bool [klabel(#ruleRequires), symbol]
+  syntax #RuleContent ::= #RuleBody "when" Bool "ensures" Bool [klabel(#ruleRequiresEnsures), symbol]
+  syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]
+  syntax #RuleContent ::= #RuleBody "requires" Bool "ensures" Bool [klabel(#ruleRequiresEnsures), symbol]
+  syntax #RuleContent ::= #RuleBody "ensures" Bool [klabel(#ruleEnsures), symbol]
+  syntax #RuleBody ::= K
+endmodule
+
+
+module RULE-CELLS [org.kframework.attributes.Location(Location(274,1,284,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports RULE-LISTS
+  imports RULE-CELLS$SYNTAX
+  imports KCELLS
+endmodule
+
+
+module RULE-CELLS$SYNTAX [org.kframework.attributes.Location(Location(274,1,284,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports RULE-LISTS$SYNTAX
+  imports KCELLS$SYNTAX
+  syntax #OptionalDots ::= "..." [klabel(#dots), symbol]
+  syntax #OptionalDots ::= "" [klabel(#noDots), symbol]
+endmodule
+
+
+module RULE-LISTS [org.kframework.attributes.Location(Location(410,1,415,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports RULE-LISTS$SYNTAX
+endmodule
+
+
+module RULE-LISTS$SYNTAX [org.kframework.attributes.Location(Location(410,1,415,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module RULE-TAG-SYNTAX [org.kframework.attributes.Location(Location(2766,1,2770,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports RULE-TAG-SYNTAX$SYNTAX
+  imports BUILTIN-ID-TOKENS
+endmodule
+
+
+module RULE-TAG-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(2766,1,2770,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports BUILTIN-ID-TOKENS$SYNTAX
+  syntax #RuleTag ::= #LowerId [token]
+endmodule
+
+
+module SET [not-lr1, org.kframework.attributes.Location(Location(493,1,605,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SET$SYNTAX
+  imports INT-SYNTAX
+  imports BASIC-K
+  rule `_|Set__SET_Set_Set_Set`(#SemanticCastToSet(S1),#SemanticCastToSet(S2))=>`_Set_`(#SemanticCastToSet(S1),`Set:difference`(#SemanticCastToSet(S2),#SemanticCastToSet(S1))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(546), org.kframework.attributes.Location(Location(546,8,546,45)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module SET$SYNTAX [not-lr1, org.kframework.attributes.Location(Location(493,1,605,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports INT-SYNTAX$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax associativity left _|Set__SET_Set_Set_Set
+  syntax associativity left _Set_
+  syntax Set [hook(SET.Set), org.kframework.attributes.Location(Location(497,3,497,28)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Set ::= Set Set [assoc, comm, element(SetItem), format(%1%n%2), function, functional, hook(SET.concat), idem, klabel(_Set_), left, symbol, unit(.Set)]
+  syntax Set ::= Set "|Set" Set [function, functional, hook(SET.union), left]
+  syntax Set ::= Set "-Set" Set [function, functional, hook(SET.difference), klabel(Set:difference), latex({#1}-_{\it Set}{#2}), symbol]
+  syntax Set ::= "intersectSet" "(" Set "," Set ")" [function, functional, hook(SET.intersection), klabel(intersectSet)]
+  syntax Set ::= "SetItem" "(" KItem ")" [function, functional, hook(SET.element), klabel(SetItem), symbol]
+  syntax Set ::= ".Set" [function, functional, hook(SET.unit), klabel(.Set), latex(\dotCt{Set}), symbol]
+  syntax KItem ::= "choice" "(" Set ")" [function, hook(SET.choice), klabel(Set:choice)]
+  syntax Int ::= "size" "(" Set ")" [function, functional, hook(SET.size), klabel(size)]
+  syntax Bool ::= Set "<=Set" Set [function, functional, hook(SET.inclusion)]
+  syntax Bool ::= KItem "in" Set [function, functional, hook(SET.in), klabel(Set:in), symbol]
+endmodule
+
+
+module SORT-BOOL [org.kframework.attributes.Location(Location(776,1,778,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports SORT-BOOL$SYNTAX
+endmodule
+
+
+module SORT-BOOL$SYNTAX [org.kframework.attributes.Location(Location(776,1,778,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Bool [hook(BOOL.Bool), org.kframework.attributes.Location(Location(777,3,777,31)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+endmodule
+
+
+module SORT-K [org.kframework.attributes.Location(Location(26,1,28,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-K$SYNTAX
+endmodule
+
+
+module SORT-K$SYNTAX [org.kframework.attributes.Location(Location(26,1,28,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  syntax K [hook(K.K), org.kframework.attributes.Location(Location(27,3,27,22)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module SORT-KBOTT [org.kframework.attributes.Location(Location(67,1,70,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-KBOTT$SYNTAX
+  imports SORT-K
+endmodule
+
+
+module SORT-KBOTT$SYNTAX [org.kframework.attributes.Location(Location(67,1,70,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-K$SYNTAX
+  syntax KBott [org.kframework.attributes.Location(Location(69,3,69,14)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module SORT-PREDICATES [org.kframework.attributes.Location(Location(424,1,429,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+  imports SORT-PREDICATES$SYNTAX
+endmodule
+
+
+module SORT-PREDICATES$SYNTAX [org.kframework.attributes.Location(Location(424,1,429,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/kast.md))]
+endmodule
+
+
+module STDIN-STREAM [org.kframework.attributes.Location(Location(2373,1,2467,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STDIN-STREAM$SYNTAX
+  imports MAP
+  imports K-REFLECTION
+  imports K-IO
+  syntax Cell ::= StdinCell
+  rule initStdinCell(Init)=>`<stdin>`(#noDots(.KList),`_List_`(`_List_`(`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(`project:String`(`Map:lookup`(Init,#token("$STDIN","KConfigVar")))))),`ListItem`(#SemanticCastToString(`project:String`(`Map:lookup`(Init,#token("$IO","KConfigVar")))))),`ListItem`(`#istream(_)_STDIN-STREAM_Stream_Int`(`#stdin_K-IO_Int`(.KList)))),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule `<stdin>`(#noDots(.KList),`_List_`(`_List_`(`_List_`(`ListItem`(`#parseInput(_,_)_STDIN-STREAM_Stream_String_String`(#SemanticCastToString(_),#SemanticCastToString(Delimiters))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(S)=>`_+String__STRING-COMMON_String_String_String`(#SemanticCastToString(S),`chrChar(_)_STRING-COMMON_String_Int`(`project:Int`(`#getc(_)_K-IO_IOInt_Int`(#SemanticCastToInt(N)))))))),`ListItem`(#token("\"on\"","String"))),`ListItem`(`#istream(_)_STDIN-STREAM_Stream_Int`(#SemanticCastToInt(N)))),#noDots(.KList)) requires `_==Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("-1","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2384), label(STDIN-STREAM.stdinGetc), org.kframework.attributes.Location(Location(2384,8,2390,49)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), priority(200), stream]
+  rule `<stdin>`(#noDots(.KList),`_List_`(`_List_`(`ListItem`(`#parseInput(_,_)_STDIN-STREAM_Stream_String_String`(#token("\"String\"","String"),#SemanticCastToString(Delimiters)))=>`ListItem`(#SemanticCastToString(S)),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(S)=>#token("\"\"","String")))),#SemanticCastToList(_)),#noDots(.KList)) requires `_=/=Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("-1","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2395), label(STDIN-STREAM.stdinParseString), org.kframework.attributes.Location(Location(2395,8,2400,50)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), stream]
+  rule `<stdin>`(#noDots(.KList),`_List_`(`_List_`(`ListItem`(`#parseInput(_,_)_STDIN-STREAM_Stream_String_String`(#token("\"Int\"","String"),#SemanticCastToString(Delimiters)))=>`ListItem`(`String2Int(_)_STRING-COMMON_Int_String`(`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S),#token("0","Int"),`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int"))))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(S)=>`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S),`_+Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("1","Int")),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S)))))),#SemanticCastToList(_)),#noDots(.KList)) requires `_andBool_`(`_=/=Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("-1","Int")),`_>Int_`(`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S)),#token("1","Int"))) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2405), label(STDIN-STREAM.stdinParseInt), org.kframework.attributes.Location(Location(2405,8,2412,38)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), stream]
+  rule `<stdin>`(#noDots(.KList),`_List_`(`_List_`(`ListItem`(`#parseInput(_,_)_STDIN-STREAM_Stream_String_String`(#SemanticCastToString(Sort),#SemanticCastToString(Delimiters)))=>`ListItem`(`#parseKAST(_)_K-REFLECTION_Sort_String`(`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S),#token("0","Int"),`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int"))))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(S)=>`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S),`_+Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("1","Int")),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S)))))),#SemanticCastToList(_)),#noDots(.KList)) requires `_andBool_`(`_andBool_`(`_=/=Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("-1","Int")),`_==String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(Sort),#token("\"K\"","String"))),`_>Int_`(`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S)),#token("1","Int"))) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2416), label(STDIN-STREAM.stdinParseArbitrarySort), org.kframework.attributes.Location(Location(2416,8,2424,38)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), stream]
+  rule `<stdin>`(#noDots(.KList),`_List_`(`_List_`(`ListItem`(`#parseInput(_,_)_STDIN-STREAM_Stream_String_String`(#SemanticCastToString(Sort),#SemanticCastToString(Delimiters))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(S)=>`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S),#token("1","Int"),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S)))))),#SemanticCastToList(_)),#noDots(.KList)) requires `_andBool_`(`_andBool_`(`_=/=Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S),#SemanticCastToString(Delimiters),#token("0","Int")),#token("-1","Int")),`_=/=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(Sort),#token("\"String\"","String"))),`_<=Int_`(`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S)),#token("1","Int"))) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2428), label(STDIN-STREAM.stdinTrim), org.kframework.attributes.Location(Location(2428,8,2435,39)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), stream]
+  rule `<stdin>`(#noDots(.KList),`_List_`(`.List`(.KList)=>`ListItem`(`#parseInput(_,_)_STDIN-STREAM_Stream_String_String`(#SemanticCastToString(?Sort),#SemanticCastToString(?Delimiters))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(_)))),#dots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2453), label(STDIN-STREAM.stdinUnblock), org.kframework.attributes.Location(Location(2453,8,2457,16)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), unblock]
+endmodule
+
+
+module STDIN-STREAM$SYNTAX [org.kframework.attributes.Location(Location(2373,1,2467,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports MAP$SYNTAX
+  imports K-REFLECTION$SYNTAX
+  imports K-IO$SYNTAX
+  syntax Stream ::= "#parseInput" "(" String "," String ")" [klabel(#parseInput)]
+  syntax Stream ::= "#istream" "(" Int ")" [klabel(#istream)]
+  syntax StdinCell ::= "initStdinCell" "(" Map ")" [function, initializer, noThread]
+  syntax StdinCell ::= "<stdin>" List "</stdin>" [cell, cellName(stdin), contentStartColumn(17), contentStartLine(2380), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), topcell]
+  Bubble(config,<stdin> ListItem(#buffer($STDIN:String)) ListItem($IO:String) ListItem(#istream(#stdin)) </stdin>,[contentStartColumn(17), contentStartLine(2380), org.kframework.attributes.Location(Location(2380,3,2380,113)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))])
+endmodule
+
+
+module STDOUT-STREAM [org.kframework.attributes.Location(Location(2469,1,2537,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STDOUT-STREAM$SYNTAX
+  imports MAP
+  imports K-IO
+  syntax Cell ::= StdoutCell
+  rule initStdoutCell(Init)=>`<stdout>`(#noDots(.KList),`_List_`(`_List_`(`ListItem`(`#ostream(_)_STDOUT-STREAM_Stream_Int`(`#stdout_K-IO_Int`(.KList))),`ListItem`(#SemanticCastToString(`project:String`(`Map:lookup`(Init,#token("$IO","KConfigVar")))))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#token("\"\"","String")))),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [initializer]
+  rule `<stdout>`(#noDots(.KList),`_List_`(`_List_`(`_List_`(`_List_`(`ListItem`(`#ostream(_)_STDOUT-STREAM_Stream_Int`(#SemanticCastToInt(_))),`ListItem`(#SemanticCastToKItem(_))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(Buffer)=>`_+String__STRING-COMMON_String_String_String`(#SemanticCastToString(Buffer),`Int2String(_)_STRING-COMMON_String_Int`(#SemanticCastToInt(I)))))),`ListItem`(#SemanticCastToInt(I))=>`.List`(.KList)),#SemanticCastToList(_)),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2488), label(STDOUT-STREAM.stdoutBufferInt), org.kframework.attributes.Location(Location(2488,8,2494,17)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), priority(25), stream]
+  rule `<stdout>`(#noDots(.KList),`_List_`(`_List_`(`_List_`(`_List_`(`ListItem`(`#ostream(_)_STDOUT-STREAM_Stream_Int`(#SemanticCastToInt(_))),`ListItem`(#SemanticCastToKItem(_))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(Buffer)=>`_+String__STRING-COMMON_String_String_String`(#SemanticCastToString(Buffer),`Float2String(_)_STRING-COMMON_String_Float`(#SemanticCastToFloat(F)))))),`ListItem`(#SemanticCastToFloat(F))=>`.List`(.KList)),#SemanticCastToList(_)),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2478), label(STDOUT-STREAM.stdoutBufferFloat), org.kframework.attributes.Location(Location(2478,8,2484,17)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), priority(25), stream]
+  rule `<stdout>`(#noDots(.KList),`_List_`(`_List_`(`_List_`(`_List_`(`ListItem`(`#ostream(_)_STDOUT-STREAM_Stream_Int`(#SemanticCastToInt(_))),`ListItem`(#SemanticCastToKItem(_))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(Buffer)=>`_+String__STRING-COMMON_String_String_String`(#SemanticCastToString(Buffer),#SemanticCastToString(S))))),`ListItem`(#SemanticCastToString(S))=>`.List`(.KList)),#SemanticCastToList(_)),#noDots(.KList)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2498), label(STDOUT-STREAM.stdoutBufferString), org.kframework.attributes.Location(Location(2498,8,2504,17)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), priority(25), stream]
+  rule `<stdout>`(#noDots(.KList),`_List_`(`_List_`(`_List_`(`ListItem`(`#ostream(_)_STDOUT-STREAM_Stream_Int`(#SemanticCastToInt(N)=>`project:Int`(`#write(_,_)_K-IO_K_Int_String`(#SemanticCastToInt(N),#SemanticCastToString(S))~>#SemanticCastToInt(N)))),`ListItem`(#token("\"on\"","String"))),`ListItem`(`#buffer(_)_K-IO_Stream_K`(#SemanticCastToString(S)=>#token("\"\"","String")))),#SemanticCastToList(_)),#noDots(.KList)) requires `_=/=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S),#token("\"\"","String")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(2510), label(STDOUT-STREAM.stdoutWrite), org.kframework.attributes.Location(Location(2510,8,2516,28)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol]), priority(30), stream]
+endmodule
+
+
+module STDOUT-STREAM$SYNTAX [org.kframework.attributes.Location(Location(2469,1,2537,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports MAP$SYNTAX
+  imports K-IO$SYNTAX
+  syntax Stream ::= "#ostream" "(" Int ")" [klabel(#ostream)]
+  syntax StdoutCell ::= "initStdoutCell" "(" Map ")" [function, initializer, noThread]
+  syntax StdoutCell ::= "<stdout>" List "</stdout>" [cell, cellName(stdout), contentStartColumn(17), contentStartLine(2474), format(%1%i%n%2%d%n%3), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol]), topcell]
+  Bubble(config,<stdout> ListItem(#ostream(#stdout)) ListItem($IO:String) ListItem(#buffer("")) </stdout>,[contentStartColumn(17), contentStartLine(2474), org.kframework.attributes.Location(Location(2474,3,2474,105)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))])
+endmodule
+
+
+module STRING [org.kframework.attributes.Location(Location(1566,1,1570,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-KORE
+  imports STRING-COMMON
+  imports STRING$SYNTAX
+endmodule
+
+
+module STRING$SYNTAX [org.kframework.attributes.Location(Location(1566,1,1570,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-KORE$SYNTAX
+  imports STRING-KAST$SYNTAX
+  imports STRING-COMMON$SYNTAX
+endmodule
+
+
+module STRING-BUFFER$SYNTAX [org.kframework.attributes.Location(Location(1616,1,1619,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-BUFFER-IN-K$SYNTAX
+endmodule
+
+
+module STRING-BUFFER-IN-K$SYNTAX [org.kframework.attributes.Location(Location(1592,1,1604,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), symbolic]
+  imports STRING$SYNTAX
+  imports BASIC-K$SYNTAX
+  syntax associativity left _+String__STRING-BUFFER-IN-K_StringBuffer_StringBuffer_String
+  syntax StringBuffer ::= StringBuffer "+String" String [avoid, function, functional, left]
+  syntax StringBuffer ::= String
+  syntax StringBuffer ::= ".StringBuffer" [function, functional]
+  syntax String ::= "StringBuffer2String" "(" StringBuffer ")" [function, functional, klabel(StringBuffer2String)]
+endmodule
+
+
+module STRING-COMMON [org.kframework.attributes.Location(Location(1365,1,1548,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-SYNTAX
+  imports STRING-COMMON$SYNTAX
+  imports K-EQUAL
+  imports INT
+  imports FLOAT-SYNTAX
+  rule `rfindChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(_),#token("\"\"","String"),#SemanticCastToInt(_))=>#token("-1","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1527), org.kframework.attributes.Location(Location(1527,8,1527,33)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `rfindChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),#SemanticCastToString(S2),#SemanticCastToInt(I))=>`maxInt(_,_)_INT-COMMON_Int_Int_Int`(`rfindString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("0","Int"),#token("1","Int")),#SemanticCastToInt(I)),`rfindChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("1","Int"),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S2))),#SemanticCastToInt(I))) requires `_=/=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S2),#token("\"\"","String")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1526), org.kframework.attributes.Location(Location(1526,8,1526,182)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `replaceFirst(_,_,_)_STRING-COMMON_String_String_String_String`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#SemanticCastToString(_))=>#SemanticCastToString(Source) requires `_<Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#token("0","Int")),#token("0","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1537), org.kframework.attributes.Location(Location(1537,8,1538,57)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `replaceFirst(_,_,_)_STRING-COMMON_String_String_String_String`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#SemanticCastToString(Replacement))=>`_+String__STRING-COMMON_String_String_String`(`_+String__STRING-COMMON_String_String_String`(`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(Source),#token("0","Int"),`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#token("0","Int"))),#SemanticCastToString(Replacement)),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(Source),`_+Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#token("0","Int")),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(ToReplace))),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(Source)))) requires `_>=Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#token("0","Int")),#token("0","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1534), org.kframework.attributes.Location(Location(1534,8,1536,66)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `replaceAll(_,_,_)_STRING-COMMON_String_String_String_String`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#SemanticCastToString(Replacement))=>`replace(_,_,_,_)_STRING-COMMON_String_String_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#SemanticCastToString(Replacement),`countAllOccurrences(_,_)_STRING-COMMON_Int_String_String`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1546), org.kframework.attributes.Location(Location(1546,8,1546,154)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `replace(_,_,_,_)_STRING-COMMON_String_String_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(_),#SemanticCastToString(_),#token("0","Int"))=>#SemanticCastToString(Source) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1545), org.kframework.attributes.Location(Location(1545,8,1545,49)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `replace(_,_,_,_)_STRING-COMMON_String_String_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#SemanticCastToString(Replacement),#SemanticCastToInt(Count))=>`_+String__STRING-COMMON_String_String_String`(`_+String__STRING-COMMON_String_String_String`(`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(Source),#token("0","Int"),`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#token("0","Int"))),#SemanticCastToString(Replacement)),`replace(_,_,_,_)_STRING-COMMON_String_String_String_String_Int`(`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(Source),`_+Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToReplace),#token("0","Int")),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(ToReplace))),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(Source))),#SemanticCastToString(ToReplace),#SemanticCastToString(Replacement),`_-Int_`(#SemanticCastToInt(Count),#token("1","Int")))) requires `_>Int_`(#SemanticCastToInt(Count),#token("0","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1541), org.kframework.attributes.Location(Location(1541,8,1544,30)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(_),#token("\"\"","String"),#SemanticCastToInt(_))=>#token("-1","Int") requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1525), org.kframework.attributes.Location(Location(1525,8,1525,32)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),#SemanticCastToString(S2),#SemanticCastToInt(I))=>`#if_#then_#else_#fi_K-EQUAL-SYNTAX_Sort_Bool_Sort_Sort`(`_==Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("0","Int"),#token("1","Int")),#SemanticCastToInt(I)),#token("-1","Int")),`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("1","Int"),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S2))),#SemanticCastToInt(I)),`#if_#then_#else_#fi_K-EQUAL-SYNTAX_Sort_Bool_Sort_Sort`(`_==Int_`(`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("1","Int"),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S2))),#SemanticCastToInt(I)),#token("-1","Int")),`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("0","Int"),#token("1","Int")),#SemanticCastToInt(I)),`minInt(_,_)_INT-COMMON_Int_Int_Int`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("0","Int"),#token("1","Int")),#SemanticCastToInt(I)),`findChar(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(S1),`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(S2),#token("1","Int"),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(S2))),#SemanticCastToInt(I))))) requires `_=/=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S2),#token("\"\"","String")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1524), org.kframework.attributes.Location(Location(1524,8,1524,431)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `countAllOccurrences(_,_)_STRING-COMMON_Int_String_String`(#SemanticCastToString(Source),#SemanticCastToString(ToCount))=>`_+Int_`(#token("1","Int"),`countAllOccurrences(_,_)_STRING-COMMON_Int_String_String`(`substrString(_,_,_)_STRING-COMMON_String_String_Int_Int`(#SemanticCastToString(Source),`_+Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToCount),#token("0","Int")),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(ToCount))),`lengthString(_)_STRING-COMMON_Int_String`(#SemanticCastToString(Source))),#SemanticCastToString(ToCount))) requires `_>=Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToCount),#token("0","Int")),#token("0","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1531), org.kframework.attributes.Location(Location(1531,8,1532,60)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `countAllOccurrences(_,_)_STRING-COMMON_Int_String_String`(#SemanticCastToString(Source),#SemanticCastToString(ToCount))=>#token("0","Int") requires `_<Int_`(`findString(_,_,_)_STRING-COMMON_Int_String_String_Int`(#SemanticCastToString(Source),#SemanticCastToString(ToCount),#token("0","Int")),#token("0","Int")) ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1529), org.kframework.attributes.Location(Location(1529,8,1530,59)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody "requires" Bool [klabel(#ruleRequires), symbol])]
+  rule `_>String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2))=>`_<String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S2),#SemanticCastToString(S1)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1521), org.kframework.attributes.Location(Location(1521,8,1521,52)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_>=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2))=>`notBool_`(`_<String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1522), org.kframework.attributes.Location(Location(1522,8,1522,63)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_=/=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2))=>`notBool_`(`_==String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1500), org.kframework.attributes.Location(Location(1500,8,1500,65)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule `_<=String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2))=>`notBool_`(`_<String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S2),#SemanticCastToString(S1))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1520), org.kframework.attributes.Location(Location(1520,8,1520,63)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module STRING-COMMON$SYNTAX [org.kframework.attributes.Location(Location(1365,1,1548,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-SYNTAX$SYNTAX
+  imports K-EQUAL$SYNTAX
+  imports INT$SYNTAX
+  imports FLOAT-SYNTAX$SYNTAX
+  syntax associativity left _==String__STRING-COMMON_Bool_String_String
+  syntax associativity left _=/=String__STRING-COMMON_Bool_String_String
+  syntax associativity left _+String__STRING-COMMON_String_String_String
+  syntax String ::= String "+String" String [function, functional, hook(STRING.concat), latex({#1}+_{\scriptstyle\it String}{#2}), left]
+  syntax String ::= "substrString" "(" String "," Int "," Int ")" [function, functional, hook(STRING.substr), klabel(substrString)]
+  syntax String ::= "replaceFirst" "(" String "," String "," String ")" [function, functional, hook(STRING.replaceFirst)]
+  syntax String ::= "replaceAll" "(" String "," String "," String ")" [function, functional, hook(STRING.replaceAll)]
+  syntax String ::= "replace" "(" String "," String "," String "," Int ")" [function, hook(STRING.replace)]
+  syntax String ::= "newUUID" [function, hook(STRING.uuid), impure]
+  syntax String ::= "directionalityChar" "(" String ")" [function, hook(STRING.directionality), klabel(directionalityChar)]
+  syntax String ::= "chrChar" "(" Int ")" [function, hook(STRING.chr), klabel(chrChar)]
+  syntax String ::= "categoryChar" "(" String ")" [function, hook(STRING.category), klabel(categoryChar)]
+  syntax String ::= "Int2String" "(" Int ")" [function, functional, hook(STRING.int2string), klabel(Int2String)]
+  syntax String ::= "Float2String" "(" Float "," String ")" [function, hook(STRING.floatFormat), klabel(FloatFormat)]
+  syntax String ::= "Float2String" "(" Float ")" [function, functional, hook(STRING.float2string), klabel(Float2String)]
+  syntax String ::= "Base2String" "(" Int "," Int ")" [function, hook(STRING.base2string), klabel(Base2String)]
+  syntax Int ::= "rfindString" "(" String "," String "," Int ")" [function, hook(STRING.rfind), klabel(rfindString)]
+  syntax Int ::= "rfindChar" "(" String "," String "," Int ")" [function, hook(STRING.rfindChar), klabel(rfindChar)]
+  syntax Int ::= "ordChar" "(" String ")" [function, hook(STRING.ord), klabel(ordChar)]
+  syntax Int ::= "lengthString" "(" String ")" [function, functional, hook(STRING.length), klabel(lengthString)]
+  syntax Int ::= "findString" "(" String "," String "," Int ")" [function, hook(STRING.find), klabel(findString)]
+  syntax Int ::= "findChar" "(" String "," String "," Int ")" [function, hook(STRING.findChar), klabel(findChar)]
+  syntax Int ::= "countAllOccurrences" "(" String "," String ")" [function, functional, hook(STRING.countAllOccurrences)]
+  syntax Int ::= "String2Int" "(" String ")" [function, hook(STRING.string2int), klabel(String2Int)]
+  syntax Int ::= "String2Base" "(" String "," Int ")" [function, hook(STRING.string2base), klabel(String2Base)]
+  syntax Float ::= "String2Float" "(" String ")" [function, hook(STRING.string2float), klabel(String2Float)]
+  syntax Bool ::= String ">String" String [function, functional, hook(STRING.gt)]
+  syntax Bool ::= String ">=String" String [function, functional, hook(STRING.ge)]
+  syntax Bool ::= String "==String" String [function, functional, hook(STRING.eq), left]
+  syntax Bool ::= String "=/=String" String [function, functional, hook(STRING.ne), left]
+  syntax Bool ::= String "<String" String [function, functional, hook(STRING.lt)]
+  syntax Bool ::= String "<=String" String [function, functional, hook(STRING.le)]
+endmodule
+
+
+module STRING-KAST$SYNTAX [kast, org.kframework.attributes.Location(Location(1550,1,1556,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-COMMON$SYNTAX
+  imports K-EQUAL$SYNTAX
+endmodule
+
+
+module STRING-KORE [kore, org.kframework.attributes.Location(Location(1558,1,1564,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-KORE$SYNTAX
+  imports STRING-COMMON
+  imports K-EQUAL
+  rule `_==K_`(#SemanticCastToString(S1),#SemanticCastToString(S2))=>`_==String__STRING-COMMON_Bool_String_String`(#SemanticCastToString(S1),#SemanticCastToString(S2)) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(8), contentStartLine(1562), org.kframework.attributes.Location(Location(1562,8,1562,49)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module STRING-KORE$SYNTAX [kore, org.kframework.attributes.Location(Location(1558,1,1564,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-COMMON$SYNTAX
+  imports K-EQUAL$SYNTAX
+endmodule
+
+
+module STRING-SYNTAX [org.kframework.attributes.Location(Location(1360,1,1363,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports STRING-SYNTAX$SYNTAX
+endmodule
+
+
+module STRING-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(1360,1,1363,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax String [hook(STRING.String), org.kframework.attributes.Location(Location(1361,3,1361,37)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax String ::= r"[\\\"](([^\\\"\\n\\r\\\\])|([\\\\][nrtf\\\"\\\\])|([\\\\][x][0-9a-fA-F]{2})|([\\\\][u][0-9a-fA-F]{4})|([\\\\][U][0-9a-fA-F]{8}))*[\\\"]" [token]
+endmodule
+
+
+module UNISWAPV2 [org.kframework.attributes.Location(Location(15,1,58,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k))]
+  imports UNISWAPV2-SYNTAX
+  imports UNISWAPV2$SYNTAX
+  imports MAP
+  imports EXECUTION
+  rule #cells(`<k>`(#noDots(.KList),`exec(_)_EXECUTION-SYNTAX_Executable_ETHTransaction`(`_removes__and__ofliquidity_UNISWAPV2-SYNTAX_UniswapV2TX_ETHAddress_Int_ETHAddress_Int_ETHAddress`(#SemanticCastToETHAddress(LiquidityProvider),#SemanticCastToInt(Amount0),#SemanticCastToETHAddress(Token0),#SemanticCastToInt(Amount1),#SemanticCastToETHAddress(Token1)))=>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(Token0),`_-Int_`(#token("0","Int"),#SemanticCastToInt(Amount0)))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(Token1),`_-Int_`(#token("0","Int"),#SemanticCastToInt(Amount1)))~>`GetPrice___UNISWAPV2-SYNTAX_InternalCmd_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Token0),#SemanticCastToETHAddress(Token1)),#dots(.KList)),`<B>`(#dots(.KList),`.List`(.KList)=>`ListItem`(`_removes__and__ofliquidity_UNISWAPV2-SYNTAX_UniswapV2TX_ETHAddress_Int_ETHAddress_Int_ETHAddress`(#SemanticCastToETHAddress(LiquidityProvider),#SemanticCastToInt(Amount0),#SemanticCastToETHAddress(Token0),#SemanticCastToInt(Amount1),#SemanticCastToETHAddress(Token1))),#noDots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(45), org.kframework.attributes.Location(Location(45,10,50,114)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(`<k>`(#noDots(.KList),`exec(_)_EXECUTION-SYNTAX_Executable_ETHTransaction`(`_adds__and__ofliquidity_UNISWAPV2-SYNTAX_UniswapV2TX_ETHAddress_Int_ETHAddress_Int_ETHAddress`(#SemanticCastToETHAddress(LiquidityProvider),#SemanticCastToInt(Amount0),#SemanticCastToETHAddress(Token0),#SemanticCastToInt(Amount1),#SemanticCastToETHAddress(Token1)))=>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(Token0),#SemanticCastToInt(Amount0))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(Token1),#SemanticCastToInt(Amount1))~>`GetPrice___UNISWAPV2-SYNTAX_InternalCmd_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Token0),#SemanticCastToETHAddress(Token1)),#dots(.KList)),`<B>`(#dots(.KList),`.List`(.KList)=>`ListItem`(`_adds__and__ofliquidity_UNISWAPV2-SYNTAX_UniswapV2TX_ETHAddress_Int_ETHAddress_Int_ETHAddress`(#SemanticCastToETHAddress(LiquidityProvider),#SemanticCastToInt(Amount0),#SemanticCastToETHAddress(Token0),#SemanticCastToInt(Amount1),#SemanticCastToETHAddress(Token1))),#noDots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(38), org.kframework.attributes.Location(Location(38,10,43,111)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(#cells(`<k>`(#noDots(.KList),`exec(_)_EXECUTION-SYNTAX_Executable_ETHTransaction`(`_fee__EXECUTION-SYNTAX_ETHTransaction_ETHTransaction_Int`(`_swapsfor_byproviding__and__withchange__UNISWAPV2-SYNTAX_UniswapV2TX_ETHAddress_ETHAddress_Int_ETHAddress_Int_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(TokenOut),#SemanticCastToInt(AmountInTokenIn),#SemanticCastToETHAddress(TokenIn),#SemanticCastToInt(AmountInTokenOut),#SemanticCastToETHAddress(TokenOut),#SemanticCastToInt(AmountOutTokenIn)),#SemanticCastToInt(GasFee)))=>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(TokenIn),`_-Int_`(#token("0","Int"),#SemanticCastToInt(AmountInTokenIn)))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(TokenIn),#SemanticCastToInt(AmountInTokenIn))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(TokenOut),`_-Int_`(#token("0","Int"),#SemanticCastToInt(AmountInTokenOut)))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(TokenOut),#SemanticCastToInt(AmountInTokenOut))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(TokenIn),#SemanticCastToInt(AmountOutTokenIn))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(TokenIn),`_-Int_`(#token("0","Int"),#SemanticCastToInt(AmountOutTokenIn)))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(TokenOut),`_+Int_`(`_/Int_`(`_*Int_`(`_-Int_`(`_*Int_`(#token("997","Int"),#SemanticCastToInt(AmountInTokenIn)),`_*Int_`(#token("1000","Int"),#SemanticCastToInt(AmountOutTokenIn))),#SemanticCastToInt(USwapV2BalanceOut)),`_+Int_`(`_*Int_`(#token("1000","Int"),`_-Int_`(#SemanticCastToInt(USwapV2BalanceIn),#SemanticCastToInt(AmountOutTokenIn))),`_*Int_`(#token("997","Int"),#SemanticCastToInt(AmountInTokenIn)))),`_/Int_`(`_*Int_`(#SemanticCastToInt(AmountInTokenOut),#token("997","Int")),#token("1000","Int"))))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(TokenOut),`_-Int_`(#token("0","Int"),`_+Int_`(`_/Int_`(`_*Int_`(`_-Int_`(`_*Int_`(#token("997","Int"),#SemanticCastToInt(AmountInTokenIn)),`_*Int_`(#token("1000","Int"),#SemanticCastToInt(AmountOutTokenIn))),#SemanticCastToInt(USwapV2BalanceOut)),`_+Int_`(`_*Int_`(#token("1000","Int"),`_-Int_`(#SemanticCastToInt(USwapV2BalanceIn),#SemanticCastToInt(AmountOutTokenIn))),`_*Int_`(#token("997","Int"),#SemanticCastToInt(AmountInTokenIn)))),`_/Int_`(`_*Int_`(#SemanticCastToInt(AmountInTokenOut),#token("997","Int")),#token("1000","Int")))))~>`_in_gets__EXECUTION-SYNTAX_Statement_ETHAddress_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#token("0","Int"),`_-Int_`(#token("0","Int"),#SemanticCastToInt(GasFee)))~>`GetPrice___UNISWAPV2-SYNTAX_InternalCmd_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(TokenIn),#SemanticCastToETHAddress(TokenOut)),#dots(.KList)),`<S>`(#dots(.KList),`_Map_`(`_|->_`(`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(TokenOut)),#SemanticCastToInt(USwapV2BalanceOut)),`_|->_`(`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(TokenIn)),#SemanticCastToInt(USwapV2BalanceIn))),#dots(.KList))),`<B>`(#dots(.KList),`.List`(.KList)=>`ListItem`(`_fee__EXECUTION-SYNTAX_ETHTransaction_ETHTransaction_Int`(`_swapsfor_byproviding__and__withchange__UNISWAPV2-SYNTAX_UniswapV2TX_ETHAddress_ETHAddress_Int_ETHAddress_Int_ETHAddress_Int`(#SemanticCastToETHAddress(Address),#SemanticCastToETHAddress(TokenOut),#SemanticCastToInt(AmountInTokenIn),#SemanticCastToETHAddress(TokenIn),#SemanticCastToInt(AmountInTokenOut),#SemanticCastToETHAddress(TokenOut),#SemanticCastToInt(AmountOutTokenIn)),#SemanticCastToInt(GasFee))),#noDots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(19), org.kframework.attributes.Location(Location(19,10,33,175)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+  rule #cells(#cells(#cells(`<k>`(#noDots(.KList),`GetPrice___UNISWAPV2-SYNTAX_InternalCmd_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Token0),#SemanticCastToETHAddress(Token1))=>.K,#dots(.KList)),`<B>`(#dots(.KList),`.List`(.KList)=>`ListItem`(`GetPrice___UNISWAPV2-SYNTAX_InternalCmd_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Token0),#SemanticCastToETHAddress(Token1))),#noDots(.KList))),`<S>`(#dots(.KList),`_Map_`(`_|->_`(`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(Token0)),#SemanticCastToInt(Qty0)),`_|->_`(`_in__EXECUTION-SYNTAX_BalanceEntry_ETHAddress_ETHAddress`(`UniswapV2_UNISWAPV2-SYNTAX_ETHAddress`(.KList),#SemanticCastToETHAddress(Token1)),#SemanticCastToInt(Qty1))),#dots(.KList))),`<P>`(#noDots(.KList),#SemanticCastToMap(Px)=>`Map:update`(`Map:update`(#SemanticCastToMap(Px),`_,__UNISWAPV2-SYNTAX_CurrencyPair_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Token0),#SemanticCastToETHAddress(Token1)),`_/Int_`(#SemanticCastToInt(Qty1),#SemanticCastToInt(Qty0))),`_,__UNISWAPV2-SYNTAX_CurrencyPair_ETHAddress_ETHAddress`(#SemanticCastToETHAddress(Token1),#SemanticCastToETHAddress(Token0)),`_/Int_`(#SemanticCastToInt(Qty0),#SemanticCastToInt(Qty1))),#noDots(.KList))) requires #token("true","Bool") ensures #token("true","Bool") [contentStartColumn(10), contentStartLine(52), org.kframework.attributes.Location(Location(52,10,55,105)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k)), org.kframework.definition.Production(syntax #RuleContent ::= #RuleBody [klabel(#ruleNoConditions), symbol])]
+endmodule
+
+
+module UNISWAPV2$SYNTAX [org.kframework.attributes.Location(Location(15,1,58,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k))]
+  imports UNISWAPV2-SYNTAX$SYNTAX
+  imports EXECUTION$SYNTAX
+endmodule
+
+
+module UNISWAPV2-SYNTAX [org.kframework.attributes.Location(Location(3,1,13,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k))]
+  imports UNISWAPV2-SYNTAX$SYNTAX
+  imports EXECUTION-SYNTAX
+endmodule
+
+
+module UNISWAPV2-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(3,1,13,9)), org.kframework.attributes.Source(Source(/home/sasha/sasha_mev/mev/./uniswapv2.k))]
+  imports EXECUTION-SYNTAX$SYNTAX
+  syntax UniswapV2TX ::= ETHAddress "swaps for" ETHAddress "by providing" Int ETHAddress "and" Int ETHAddress "with change" Int
+  syntax UniswapV2TX ::= ETHAddress "removes" Int ETHAddress "and" Int ETHAddress "of liquidity"
+  syntax UniswapV2TX ::= ETHAddress "adds" Int ETHAddress "and" Int ETHAddress "of liquidity"
+  syntax Statement ::= InternalCmd
+  syntax InternalCmd ::= "GetPrice" ETHAddress ETHAddress
+  syntax ETHTransaction ::= UniswapV2TX
+  syntax ETHAddress ::= "UniswapV2"
+  syntax CurrencyPair ::= ETHAddress "," ETHAddress
+endmodule
+
+
+module UNSIGNED-INT-SYNTAX [org.kframework.attributes.Location(Location(878,1,881,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  imports UNSIGNED-INT-SYNTAX$SYNTAX
+endmodule
+
+
+module UNSIGNED-INT-SYNTAX$SYNTAX [org.kframework.attributes.Location(Location(878,1,881,9)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Int [hook(INT.Int), org.kframework.attributes.Location(Location(879,3,879,28)), org.kframework.attributes.Source(Source(/usr/include/kframework/builtin/domains.md))]
+  syntax Int ::= r"[0-9]+" [prec(2), prefer, token]
+endmodule

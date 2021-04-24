@@ -35,19 +35,36 @@ def reordering_mev(program, spec_file, outfile, acc, tokens, balances, pre_price
         addresses.add(chunks[0])
 
     initialTxs = []
-    for i in initialSegment:
+    for i in initial_segment:
         initialTxs.append(all_transactions[1+2*i])
 
     krunspec = BLANK_SPEC.format(token0 = tokens[0], token1 = tokens[1], acc = acc, balance0 = balances[0], balance1=balances[1],transactions = '\n'.join(initialTxs))
-    open("temp.k". "w").write(krunspec)
-    pipe = Popen("krun " + program_file, shell=True, stdout=PIPE, stderr=PIPE)
-    outputspec = pipe.stdout.read()
-    Popen("rm temp.k", shell=True, stdout=PIPE, stderr=PIPE)
+    open("../../mev/temp.k", "w").write(krunspec)
+    pipe = Popen("cd ../../mev/ && krun temp.k", shell=True, stdout=PIPE, stderr=PIPE)
+    outputspec = pipe.stdout.read() + pipe.stderr.read()
+    Popen("rm ../../mev/temp.k", shell=True, stdout=PIPE, stderr=PIPE)
     print(outputspec)
+    SCell = outputspec[outputspec.find("<S>")+8: outputspec.rfind("</S>")-3]
+    PCell = outputspec[outputspec.find("<P>")+8: outputspec.rfind("</P>")-3]
 
-   raise Exception("debugging related")
- 
-   print(addresses)
+    print(addresses)
+
+    BLANK_SPEC = """module BOUND 
+    imports MEV 
+    rule <k> 
+            {acc} in {token0} gets {balance0} ; 
+            {acc} in {token1} gets {balance1} ;
+            {transactions}
+         => ?X 
+     </k>
+    <S> {initialMapS} =>?S:Map </S>
+    <M> .Set => ?_:Set </M>
+    <B> .List => ?_ </B>
+    <P> {initialMapP} => ?_:Map </P>
+    <V> .Map => ?_ </V>
+    ensures ( {claim} andBool (?X ==K DONE) ) orBool (?X ==K FAIL)
+endmodule
+"""
 
     lower_balance_bounds = {}
     upper_balance_bounds = {}
@@ -62,13 +79,14 @@ def reordering_mev(program, spec_file, outfile, acc, tokens, balances, pre_price
     claim = get_claim(addresses, lower_balance_bounds, upper_balance_bounds, tokens)
     print(claim)
     
-    spec = BLANK_SPEC.format(acc=acc, token0=tokens[0], token1=tokens[1], balance0=balances[0], balance1=balances[1],transactions=program, claim=claim)
+    spec = BLANK_SPEC.format(acc=acc, token0=tokens[0], token1=tokens[1], balance0=balances[0], balance1=balances[1],transactions=program, claim=claim, initialMapS=SCell, initialMapP=PCell)
     output = ""
     Path(os.path.dirname(spec_file)).mkdir(parents=True, exist_ok=True)
     print("Writing spec to", spec_file)
     open(spec_file, "w").write(spec)
     print("Starting proof..." )
     sys.stdout.flush()
+    raise Exception("debugging")
     pipe = Popen("kprove --default-claim-type all-path " + spec_file, shell=True, stdout=PIPE, stderr=PIPE)
     output = pipe.stdout.read() + pipe.stderr.read()
     output = str(output, "utf-8")
